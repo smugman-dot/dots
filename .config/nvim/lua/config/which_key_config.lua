@@ -1,5 +1,4 @@
 vim.keymap.set("i", "jk", "<Esc>")
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "File Explorer" })
 vim.keymap.set("x", "<leader>p", [["_dP]])
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -15,7 +14,7 @@ vim.keymap.set("n", "<leader>fc", tele_built.command_history, { desc = "COMMAND 
 vim.keymap.set("n", "<leader>e", tele_built.diagnostics, { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>gs", tele_built.git_status, { desc = "Git Status" })
 vim.keymap.set("n", "<leader>t", tele_built.builtin, { desc = "Telescope" })
-
+vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>")
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
 vim.keymap.set("n", "<leader>ss", "<cmd>write<cr>", { desc = "Write File" })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })

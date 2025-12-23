@@ -1,161 +1,179 @@
-* {
-    font-family: "JetBrainsMono Nerd Font Propo";
-    font-weight: bold;
-    font-size: 11px;
-    min-height: 0;
+/* -------------------------------------------------------
+ *  Waybar – Hyprland
+ *  Limpieza y ajustes de simetría/píxeles
+ * ----------------------------------------------------- */
+
+ @import "../matugen/matugen-waybar.css";
+
+ /* =======  Estilo global  ======= */
+ * {
+   font: bold 13px "JetBrainsMono Nerd Font Propo";
+   border: none;
+   border-radius: 0px;
+   box-shadow: none;
+   text-shadow: none;
+ }
+ 
+ /* =======  Contenedor principal  ======= */
+ window#waybar {
+   background: alpha(@surface_container_lowest, 1);
+   border: 2px solid alpha(@on_secondary_container, 0.25);
+   border-radius: 0px;                     /* contorno ligeramente menor */
+ }
+ 
+ /* =======  Tooltip  ======= */
+ tooltip {
+   background: alpha(@surface_container_lowest, 0.8);
+   border: 2px solid alpha(@primary_fixed_dim, 1);
+   border-radius: 10px;
+   color: @on_tertiary_container;
+ }
+ tooltip label { color: @foreground; }
+ 
+ /* =======  Ventana activa  ======= */
+ #window {
+   margin: 0px 4px 2px 4px;               
+   padding: 2px 0px 2px 10px;
+   background: transparent;
+   border-radius: 10px;
+   color: lighter(@main-color);
+ }
+ 
+ /* =======  Flechas decorativas  ======= */
+ #custom-arrow-right,
+ #custom-arrow-left {
+   margin: 0px 4px 2px 4px;               
+   color: alpha(@on_secondary_container, .3);
+ }
+ 
+ /* =======  Grupos estándar (CPU, RAM, etc.)  ======= */
+ #cpu,
+ #memory,
+ #disk,
+ #custom-updates,
+ #custom-playerlabel,
+ #custom-cava,
+ #custom-notifications,
+ #tray,
+ #custom-theme-switcher,
+ #power-profiles-daemon,
+ #control-center {
+   margin: 6px 4px;                       /* 6 vertical, 4 horizontal  */
+   padding: 0px 8px;
+   background: alpha(@tertiary_container, 0.8);
+   color: @on_tertiary_container;
+   border-radius: 10px;
+ }
+#custom-section,
+#custom-stop,
+#custom-record {
+ margin: 6px 0px;                       /* 6 vertical, 4 horizontal  */
+ padding: 0px 8px;
+ background: alpha(@tertiary_container, 0.8);
+ color: @on_tertiary_container;
+ border-radius: 10px;
+}
+ 
+ /* combinaciones de radios especiales */
+ #custom-section  { border-radius: 0 0 0 0; }
+ #custom-stop     { border-radius: 0 10px 10px 0; }
+ #custom-record   { border-radius: 10px 0 0 10px; }
+ 
+ /* =======  Workspaces  ======= */
+ #workspaces {
+   margin: 0px 4px 0px 4px;   
+   background: transparent;
+   color: alpha(@on_secondary_container, 1);
+   border-radius: 10px;
+ }
+ 
+ #workspaces button {
+   font-size: 20px;
+   margin: 0 4px;
+   padding: 0 0px;
+   color: alpha(@on_secondary_container, 0.25);
+   border-radius: 10px;
+ }
+ 
+ #workspaces button.active {
+  margin: 0 4px;
+  background: alpha(@primary, 0);
+  color: alpha(@primary, 1);
 }
 
-window#waybar {
-    background: transparent;
-}
 
-tooltip {
-    background: #15161e;
-    /* tooltip background */
-    border: 2px solid #c0caf5;
-    /* tooltip border size and color */
-    border-radius: 5px;
-    /* tooltip rounded corners */
-}
-
-#custom-launcher,
-#workspaces button,
-#mpris,
-#privacy-item,
-#bluetooth,
-#clock,
-#tray,
-#cpu,
-#memory,
-#backlight,
-#battery,
-#pulseaudio,
-#gamemode,
-#language,
-#network,
-#custom-updates {
-    text-shadow: 1px 1px 2px black;
-    /* text shadow, offset-x | offset-y | blur-radius | color */
-    background: #15161e;
-    /* background color */
-    margin: 10px 4px 4px 4px;
-    /* empty spaces around */
-    padding: 4px 10px;
-    /* extend pill size, vertical then horizontal */
-    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
-    /* pill background shadows */
-    border-radius: 5px;
-    /* rounded corners */
-    color: #c0caf5;
-    border: 1.25px solid #585b70;
-}
-
-#custom-updates {
-    color: #b4befe;
-}
-
-#network {
-    color: #89b4fa;
-}
-
-#language {
-    color: #74c7ec;
-}
-
-#backlight {
-    color: #94e2d5;
-}
-
-#pulseaudio {
-    color: #a6e3a1;
-}
-
-#memory {
-    color: #eba0ac;
-}
-
-#cpu {
-    color: #f38ba8;
-}
-
-/* extend empty space on both side of the bar,
- * value from ~/.config/hypr/hyprland.conf
- * gaps_out (8px) + border size (2px) = 10px */
-
-#clock {
-    padding-right: 5px;
-}
-
-#privacy-item {
-    background: #e64553;
-    color: #15161e;
-}
-
-#tray menu {
-    font-weight: bold;
-}
-
-#workspaces {
-    padding: 0 3px;
-    /* remove padding around workspace module */
-}
-
-#workspaces button {
-    /* padding: 0px 12px 0px 8px; */
-    /* fit with pill padding, 0px for not haveing duped vertical padding, 4px to make a square (4px value from module padding: ...#clock {padding >>4px<< 10px}) */
-    margin-left: 3px;
-    border: 1px solid transparent;
-    transition-property:
-        background-color, border-left-color, border-right-color;
-    transition-duration: 0.1s;
-    font-size: 9px;
-    color: #c0caf5;
-
-}
-
-#workspaces button.empty {
-    padding: 0px 10px;
-}
-
-#workspaces button:first-child {
-    margin-left: 0;
-}
-
-#workspaces button.active {
-    /* active workspace */
-    border: 2px solid #89b4fa; 
-    background: #1e1e2e;
-    /* background color */
-    /*border-color: #7aa2f7;*/
-    /*border-color: #b4befe;*/
-    /*color: #a6adc8;*/
-    /* icon(text) color */
-    /*	color: #c0caf5;*/
-}
-
-#workspaces button:hover {
-    background: #181825;
-}
-
-#battery {
-    color: #f9e2af;
-}
-
-#battery.warning:not(.charging) {
-    color: #fab387;
-}
-
-#battery.critical:not(.charging) {
-    color: #f9e2af;
-    animation-name: blink;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-@keyframes blink {
-    to {
-        background-color: #e64553;
-    }
-}
+ 
+ #workspaces button:hover,
+ #workspaces button.urgent {
+   background: alpha(@background, 0.5);
+   color: alpha(@primary, 1);
+ }
+ 
+ /* =======  Audio  ======= */
+ #pulseaudio,
+ #network,
+ #bluetooth {
+   margin: 0px 0px;                       /* 6 vertical, 4 horizontal  */
+   padding: 0px 5px;
+ 
+   background: alpha(@tertiary_container, 0);
+   color: @on_tertiary_container;
+   border-radius: 10px;
+ }
+ 
+ /* slider de volumen */
+ #pulseaudio-slider {
+   margin: 10px;
+ }
+ #pulseaudio-slider slider,
+ #pulseaudio-slider highlight {
+   background: transparent;
+   border: none;
+   box-shadow: none;
+   border-radius: 8px;
+ }
+ 
+ /* =======  Reloj  ======= */
+ #clock {
+   margin: 0px 4px 2px 4px;               
+   padding: 0;
+   background: alpha(@background, 0);
+   border-radius: 10px;
+   color: lighter(@main-color);
+ }
+ 
+ /* =======  Poder & batería  ======= */
+ #power {
+  margin: 0px 4px 2px 4px;   
+  background: transparent;
+   color: @on_surface;
+   border-radius: 10px;
+ }
+ 
+ #battery {
+  margin: 0px 4px 0px 4px;   
+  padding: 0 8px;
+ }
+ 
+ /* =======  Taskbar  ======= */
+ #taskbar {
+   margin: 0 4px;
+   padding: 0 8px;
+   border-radius: 10px;
+   background: transparent;
+   color: @on_tertiary_container;
+ }
+ 
+ #taskbar button:hover {
+   background: alpha(@tertiary_container, 0.8);
+ }
+ #taskbar button.active {
+   background: transparent;
+ }
+ 
+ /* =======  Módulos singulares  ======= */
+ #custom-weather { padding: 0 4px; }      /* sin fondo para icono/temperatura */
+ 
+ /* Ajuste puntual para evitar separación excesiva */
+ #bluetooth { margin-left: 7px; }          /* mantiene la distancia original */
+ 

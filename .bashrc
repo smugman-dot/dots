@@ -7,46 +7,31 @@ case $- in
 esac
 
 alias grep='grep -i --color'
-alias ls='ls -a -l'
-export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin
+alias ls='exa -a -l --icons'
+export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/
 export GDK_SCALE=1
 export GDK_DPI_SCALE=1
 export QT_SCALE_FACTOR=1
 export EDITOR="nvim"
 export NNN_OPENER=xdg-open
-# Path to the bash it configuration
-export BASH_IT="/home/walid/.bash_it"
+export OLLAMA_NUM_GPU=1
+export OLLAMA_GPU_OVERHEAD=0
 
-# Lock and Load a custom theme file.
-# Leave empty to disable theming.
-# location "$BASH_IT"/themes/
-export BASH_IT_THEME='bobby'
+# Catppuccin Macchiato Colors
+LAVENDER="\[\e[38;2;183;189;248m\]"
+BLUE="\[\e[38;2;138;173;244m\]"
+MAUVE="\[\e[38;2;198;160;246m\]"
+PINK="\[\e[38;2;245;189;230m\]"
+GREEN="\[\e[38;2;166;218;149m\]"
+TEXT="\[\e[38;2;202;211;245m\]"
+RESET="\[\e[0m\]"
 
-# Some themes can show whether `sudo` has a current token or not.
-# Set `$THEME_CHECK_SUDO` to `true` to check every prompt:
-THEME_CHECK_SUDO='true'
+parse_git_branch() {
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+  [ -n "$branch" ] && echo " $branch"
+}
 
-# Your place for hosting Git repos. I use this for private repos.
-export GIT_HOSTING='git@git.domain.com'
-
-# Don't check mail when opening terminal.
-unset MAILCHECK
-
-# Change this to your console based IRC client of choice.
-export IRC_CLIENT='irssi'
-
-# Set this to the command you use for todo.txt-cli
-export TODO="t"
-
-# Set this to the location of your work or project folders
-#BASH_IT_PROJECT_PATHS="${HOME}/Projects:/Volumes/work/src"
-
-# Set this to false to turn off version control status checking within the prompt for all themes
-export SCM_CHECK=true
-# Set to actual location of gitstatus directory if installed
-#export SCM_GIT_GITSTATUS_DIR="$HOME/gitstatus"
-# per default gitstatus uses 2 times as many threads as CPU cores, you can change this here if you must
-#export GITSTATUS_NUM_THREADS=8
+PS1="${LAVENDER}\u${RESET}@${PINK}\h ${BLUE}\w${RESET} ${GREEN}\$(parse_git_branch)${RESET}\n${GREEN}\$${RESET} "
 
 extract() {
   if [[ "$1" == "-d" || "$1" == "--dir" ]]; then
@@ -84,38 +69,10 @@ extract() {
     echo "'$1' is not a valid file"
   fi
 }
-
-# Set Xterm/screen/Tmux title with only a short hostname.
-# Uncomment this (or set SHORT_HOSTNAME to something else),
-# Will otherwise fall back on $HOSTNAME.
-#export SHORT_HOSTNAME=$(hostname -s)
-
-# Set Xterm/screen/Tmux title with only a short username.
-# Uncomment this (or set SHORT_USER to something else),
-# Will otherwise fall back on $USER.
-#export SHORT_USER=${USER:0:8}
-
-# If your theme use command duration, uncomment this to
-# enable display of last command duration.
-#export BASH_IT_COMMAND_DURATION=true
-# You can choose the minimum time in seconds before
-# command duration is displayed.
-#export COMMAND_DURATION_MIN_SECONDS=1
-
-# Set Xterm/screen/Tmux title with shortened command and directory.
-# Uncomment this to set.
-#export SHORT_TERM_LINE=true
-
-# Set vcprompt executable path for scm advance info in prompt (demula theme)
-# https://github.com/djl/vcprompt
-#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
-
-# (Advanced): Uncomment this to make Bash-it reload itself automatically
-# after enabling or disabling aliases, plugins, and completions.
-# export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1
-
-# Uncomment this to make Bash-it create alias reload.
-# export BASH_IT_RELOAD_LEGACY=1
-
-# Load Bash It
-source "$BASH_IT"/bash_it.sh
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}

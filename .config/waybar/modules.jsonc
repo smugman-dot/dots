@@ -1,0 +1,266 @@
+/* ─────────────── CORE ─────────────────────────────────────────────────────── */
+
+{
+  "hyprland/window": {
+    "format": "",
+
+    "format-alt": "{title}",
+    "max-length": 80,
+    "separate-outputs": false,
+    "rewrite": {
+      "^.*( — Zen Browser|Zen Browser)$":       "󰈹 Zen",
+      "^.*( — Firefox|Firefox)$":              "󰈹 Firefox",
+      "^.*( — Brave|Brave)$":                  " Brave",
+      "^.*( — Chromium|Chromium)$":            "󰈹 Chromium",
+      "^.*v( .*|$)":                           " Neovim",
+      "^.*~$":                                 "󰄛 Kitty",
+      "^.*(- Spotify|Spotify)$":               "󰏤 Spotify",
+      "^.*(- Code|Code)$":                     "󰈹 VSCode",
+      "^.*(- Cursor|Cursor)$":                 "󰈹 Cursor",
+      "^.+ $":                                 " Empty"   // evita títulos vacíos
+    }
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "all-outputs": true,
+    "format-icons": {
+      /*
+      "1":  "",
+      "2":  "󰖟",
+      "3":  "󰅩",
+      "4":  "󰞶",
+      "5":  "",
+      "6":  "󰓇",
+      "7":  "",
+      "8":  "󰕧",
+      "9":  "",
+      "10": "󰙯"
+
+      "1":  "󰊠",
+      "2":  "󰊠",
+      "3":  "󰊠",
+      "4":  "󰊠",
+      "5":  "󰊠",
+      "6":  "󰊠",
+      "7":  "󰊠",
+      "8":  "󰊠",
+      "9":  "󰊠",
+      "10": "󰊠"
+      */
+
+      "1":  "1",
+      "2":  "2",
+      "3":  "3",
+      "4":  "4",
+      "5":  "5",
+      "6":  "6",
+      "7":  "7",
+      "8":  "8",
+      "9":  "9",
+      "10": "0"
+
+    }
+  },
+
+  "clock": {
+    "format": "{:%H:%M}",
+    "format-alt": "{:%A %d.%m}",
+    "tooltip-format": "<tt><big>{calendar}</big></tt>",
+    "calendar": {
+      "mode": "month",
+      "on-scroll": 1,
+      "format": {
+        "months":   "<span color='#ffead3'><b>{}</b></span>",
+        "days":     "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks":    "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today":    "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up":   "shift_up",
+      "on-scroll-down": "shift_down"
+    }
+  },
+
+/* ─────────────── GRUPOS PRINCIPALES ──────────────────────────────────────── */
+
+  "group/info": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 300, "transition-left-to-right": true },
+    "modules": [
+      "custom/arrow-left",
+      "custom/playerlabel",
+      "custom/updates"
+      // "group/music"   // aparcado; actívalo cuando lo necesites
+    ]
+  },
+
+  "group/apps": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 300, "transition-left-to-right": true },
+    "modules": [
+      "custom/arrow-right",
+      // "wlr/taskbar",
+      "cpu",
+      "memory",
+      "disk"
+    ]
+  },
+
+  "group/video": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 300, "transition-left-to-right": false },
+    "modules": [
+      "custom/arrow-left",
+      "group/control-center"
+    ]
+  },
+
+  "group/control-center": {
+    "orientation": "inherit",
+    "modules": ["group/audio", "group/connection"]
+  },
+
+  "group/audio": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 300, "transition-left-to-right": false },
+    "modules": ["pulseaudio"] // "pulseaudio/slider"
+  },
+
+  "group/connection": {
+    "orientation": "inherit",
+    "modules": ["group/network"]
+  },
+
+  "group/network": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 10000, "transition-left-to-right": true },
+    "modules": ["network"]
+  },
+
+
+  "group/utils": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 300, "transition-left-to-right": false },
+    "modules": [
+      "custom/arrow-right",
+      "tray",
+      "custom/notifications",
+      "custom/weather"
+    ]
+  },
+
+/* ─────────────── MÓDULOS DE SISTEMA ─────────────────────────────────────── */
+
+  "cpu":    { "format": "󰘚 {usage}󱉸" },
+  "memory": { "format": " {:2}󱉸" },
+  "disk":   { "interval": 600, "format": "󰆼 {percentage_used}󱉸", "path": "/" },
+
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{icon}",
+    "format-muted": "󰖁",
+    "tooltip": false,
+    "format-icons": {
+      "headphones": "󰋌","handsfree": "󰋌","headset": "󰋌",
+      "phone":      "","portable": "","car": " ",
+      "default": ["󰕿","󰖀","󰕾"]
+    },
+    "on-click":         "changevolume mute",
+    "on-click-middle":  "pavucontrol",
+    "on-scroll-up":     "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+    "on-scroll-down":   "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+    "smooth-scrolling-threshold": 1
+  },
+
+  "network": {
+    "format": "{icon} ",
+    "format-icons": { "wifi": ["󰤨"], "ethernet": ["󰈁"], "disconnected": [""] },
+    "format-wifi": "󰤨",
+    "format-ethernet": "󰈁",
+    "format-disconnected": "󰖪",
+    "interval": 5,
+    "tooltip": true,
+    "tooltip-format": "{ipaddr}",
+    "tooltip-format-wifi":      "{essid} ({signalStrength}%) \n{ipaddr} | {frequency} MHz{icon}",
+    "tooltip-format-ethernet":  "{ifname} 󰈀\n{ipaddr} | {frequency} MHz{icon}",
+    "tooltip-format-disconnected": "Not Connected to any type of Network",
+    "on-click": "python ~/.config/rofi/network/network.py"
+  },
+
+  "network#speed": {
+    "format": "{bandwidthDownBits} ",
+    "interval": 5,
+    "tooltip": false
+  },
+/* ─────────────── MODS PERSONALIZADOS ────────────────────────────────────── */
+
+  //"custom/arrow-left":  { "format": "󰁒", "tooltip": false },
+  //"custom/arrow-right": { "format": "󰁙", "tooltip": false },
+
+  "custom/arrow-left":  { "format": "&lt;", "tooltip": false },
+  "custom/arrow-right": { "format": ">", "tooltip": false },
+
+  "custom/updates": {
+    "format": "󱧕 {}",
+    "tooltip": true,
+    "interval": 43200,               // 12 h
+    "exec": "~/.config/waybar/scripts/check_updates.sh",
+    "return-type": "json"
+  },
+
+  "custom/playerlabel": {
+    "format": "{}",
+    "return-type": "json",
+    "max-length": 50,
+    "exec": "playerctl -p spotify metadata --format '{\"text\": \"{{artist}} : {{markup_escape(title)}}\", \"tooltip\": \"Spotify : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+    "on-click":        "bash -c 'player=$(playerctl -l | grep -E \"spotify|cider\" | head -n 1); playerctl -p \"$player\" previous'",
+    "on-click-middle": "bash -c 'player=$(playerctl -l | grep -E \"spotify|cider\" | head -n 1); playerctl -p \"$player\" play-pause'",
+    "on-click-right":  "bash -c 'player=$(playerctl -l | grep -E \"spotify|cider\" | head -n 1); playerctl -p \"$player\" next'",
+    "tooltip": false
+  },
+
+  "custom/notifications": {
+    "format": "{} {icon}",
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click":       "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true,
+    "tooltip": false,
+    "format-icons": {
+      "notification":                "󱅫",
+      "dnd-notification":            "󰂛",
+      "none":                        "󰂚",
+      "dnd-none":                    "󰂛",
+      "inhibited-notification":      "󰂚",
+      "inhibited-none":              "󰂚",
+      "dnd-inhibited-notification":  "󰂛",
+      "dnd-inhibited-none":          "󰂛"
+    }
+  },
+
+  "custom/weather": {
+    "format": "{}",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "wttrbar --location \"36.608,2.196\" --custom-indicator '{ICON}{temp_C}°C'",
+    "return-type": "json"
+  },
+
+  "custom/cava": {
+    "format": "{}",
+    "exec": "bash ~/.config/waybar/scripts/cava.sh"
+  },
+
+  "custom/icon": { "format": "󰣇" },
+
+  "tray": { "spacing": 8 }
+}
+
+/* ─────────────── FIN ────────────────────────────────────────────────────── */

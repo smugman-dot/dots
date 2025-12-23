@@ -9,6 +9,3 @@ grim -g "$area" "$filename"
 # Copy to clipboard
 cat "$filename" | wl-copy
 
-# Optional notify
-notify-send "Screenshot saved and copied" "$filename"
-

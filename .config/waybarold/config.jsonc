@@ -1,0 +1,86 @@
+{
+  "layer": "top",
+  "height": 47,
+  "reload_style_on_change": true,
+
+  "modules-left": [
+    "custom/launcher",
+    "hyprland/workspaces",
+    "mpris"
+  ],
+
+  "modules-center": ["clock"],
+
+  "modules-right": [
+    "tray",
+    "memory",
+    "pulseaudio",
+    "custom/audio-switch",
+    "custom/updates"
+  ],
+
+  "custom/launcher": {
+    "format": "󰣇"
+  },
+
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "format": "{id}",
+    "sort-by-number": true,
+    "persistent": ["1", "2", "3", "4", "5"]
+  },
+
+  "mpris": {
+    "format": "{player_icon}  {title} - {artist}",
+    "format-paused": "{status_icon}  {title} - {artist}",
+    "max-length": 30,
+    "dynamic-len": true,
+    "player-icons": {
+      "spotify": "",
+      "default": "󰎈"
+    },
+    "status-icons": {
+      "paused": "⏸",
+      "playing": "",
+      "stopped": ""
+    },
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous"
+  },
+
+  "tray": {
+    "icon-size": 15,
+    "spacing": 10
+  },
+
+  "memory": {
+    "interval": 20,
+    "format": " {}%"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰖁 0%",
+    "format-icons": {
+      "default": ["", ""]
+    },
+    "scroll-step": 5
+  },
+
+  "custom/audio-switch": {
+    "format": "󰓃",
+    "on-click": "pactl list short sinks | rofi -dmenu | awk '{print $1}' | xargs -I {} pactl set-default-sink {}"
+  },
+
+  "custom/updates": {
+    "format": "{} 󱍷",
+    "exec": "checkupdates | wc -l",
+    "interval": 120
+  },
+
+  "clock": {
+    "format": "  {:%H:%M}"
+  }
+}
+

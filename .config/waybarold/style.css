@@ -1,0 +1,95 @@
+* {
+    font-family: "JetBrainsMono Nerd Font Propo";
+    font-weight: bold;
+    font-size: 11px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+tooltip {
+    background: #15161e;
+    border: 2px solid #c0caf5;
+    border-radius: 5px;
+}
+
+/* MODULE BASE STYLE */
+#custom-launcher,
+#mpris,
+#clock,
+#tray,
+#memory,
+#pulseaudio,
+#custom-updates,
+#custom-audio-switch {
+    background: #15161e;
+    color: #c0caf5;
+    margin: 10px 4px 4px 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #585b70;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    transition: 0.2s ease;
+}
+
+#custom-audio-switch {
+    color: #a6e3a1;
+}
+
+/* HOVER ANIMATIONS */
+#custom-launcher:hover,
+#mpris:hover,
+#clock:hover,
+#tray:hover,
+#memory:hover,
+#pulseaudio:hover,
+#custom-updates:hover,
+#custom-audio-switch:hover {
+    background: #1e1e2e;
+    transform: translateY(-2px);
+}
+
+/* WORKSPACES: CIRCLES WITH HOVER EXPAND */
+#workspaces {
+    padding: 0 6px;
+}
+
+#workspaces button {
+    background: #15161e;
+    border-radius: 50%;
+    border: 2px solid #585b70;
+    margin: 6px 4px;
+    width: 18px;
+    height: 18px;
+    transition: 0.2s ease;
+}
+
+#workspaces button.active {
+    background: #89b4fa;
+    border-color: #89b4fa;
+}
+
+#workspaces button:hover {
+    width: 34px;
+    border-radius: 12px;
+    background: #1e1e2e;
+}
+
+/* MPRIS hover popup buttons */
+#mpris {
+    position: relative;
+}
+
+#mpris:hover::after {
+    content: "    ";
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1e1e2e;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+

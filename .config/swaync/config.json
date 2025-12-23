@@ -1,0 +1,24 @@
+{
+  "position": "top-right",
+  "control-center-width": 400,
+  "control-center-height": 600,
+  "notification-icon-size": 48,
+  "notification-body-truncate": true,
+  "notification-body-max-lines": 3,
+  "timeout": 5,
+  "css-style-config": "~/.config/swaync/style.css",
+  "keyboard-shortcuts": true,
+  "widgets": [
+    "mpris",
+    "notifications"
+  ],
+  "widget-config": {
+    "mpris": {
+      "image-size": 60,
+      "album-art-enabled": true,
+      "buttons": ["prev", "play-pause", "next"],
+      "button-size": 28,
+      "format": "{{ title }} - {{ artist }}"
+    }
+  }
+}
