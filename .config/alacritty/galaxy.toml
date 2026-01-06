@@ -1,0 +1,41 @@
+# custom_purple.toml
+#
+# Created from the colors: 000000, 424153, 999999, 663399, cccccc
+
+[colors]
+# The foreground and background colors.
+draw_bold_text_with_bright_colors = false
+
+[colors.primary]
+background = "0x000000"  # Black
+foreground = "0xcccccc"  # Light Gray
+
+[colors.cursor]
+text = "0x000000"
+cursor = "0x663399"  # Purple accent
+
+[colors.selection]
+text = "0xcccccc"
+background = "0x424153" # Dark Blue-Gray (for a subtle selection highlight)
+
+[colors.normal]
+# Normal ANSI colors
+black = "0x000000"
+red = "0x424153"   # Dark Blue-Gray (Darker neutral for Red spot)
+green = "0x999999" # Medium Gray
+yellow = "0xcccccc" # Light Gray
+blue = "0x424153"  # Dark Blue-Gray (Used again for consistency/limited palette)
+magenta = "0x663399" # Purple accent
+cyan = "0x999999"  # Medium Gray (Used again for consistency/limited palette)
+white = "0xcccccc" # Light Gray
+
+[colors.bright]
+# Bright/Bold ANSI colors
+black = "0x424153" # Dark Blue-Gray
+red = "0x663399"   # Purple accent (to make an important bright color stand out)
+green = "0x999999" # Medium Gray
+yellow = "0xcccccc" # Light Gray
+blue = "0x424153"
+magenta = "0x663399" # Purple accent
+cyan = "0x999999"
+white = "0xcccccc"

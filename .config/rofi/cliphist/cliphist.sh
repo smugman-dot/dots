@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #  ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
-#  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃ 
-#  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻ 
-#                 
+#  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
+#  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
+#
 
 ## /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
 # Clipboard Manager. This script uses cliphist, rofi, and wl-copy.
@@ -19,9 +19,11 @@ fi
 while true; do
     result=$(
         rofi -i -dmenu \
-            -kb-custom-1 "Control-Delete" \
-            -kb-custom-2 "ALT-Delete" \
-            -config ~/.config/rofi/cliphist/config.rasi < <(cliphist list)
+    -kb-custom-1 "Control-Delete" \
+    -kb-custom-2 "Alt-Delete" \
+    -config ~/.config/rofi/cliphist/config.rasi < <(cliphist list | cut -f2- | sed 's/[[:space:]]*$//')
+
+
     )
 
     case "$?" in

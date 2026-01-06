@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/catppuccin-mocha.toml"
+  "~/.config/alacritty/galaxy.toml"
 ]
 
 [font]
@@ -33,5 +33,5 @@ columns = 100
 lines = 24
 
 [window.padding]
-x = 20
-y = 20
+x = 4
+y = 4

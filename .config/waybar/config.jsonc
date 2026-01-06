@@ -1,6 +1,6 @@
 {
     "output":"DP-1",
-    "layer": "bottom",
+    "layer": "top",
     "position": "bottom",
     "margin": "0 500 2 500",
     "fixed-center": true,
@@ -11,42 +11,26 @@
     "include": ["~/.config/waybar/modules.jsonc"],
 
     "modules-left": [
-      "hyprland/window",
+      "niri/window",
       "group/apps"
-
       //"custom/playerlabel"
-
-
-
-    
-      
-      
     ],
-    
+
     "modules-center": [
       //"memory",
       //"custom/updates",
-
-
       "group/info",
-      "hyprland/workspaces",
+      "niri/workspaces",
       "group/utils"
-
       //"tray",
       //"custom/notifications"
     ],
-  
+
     "modules-right": [
       "group/video",
-
-      
       //"group/audio",
       //"group/connection"),
-
-      
       "clock",
       "group/power"
     ]
   }
-  
-  // testW

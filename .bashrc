@@ -7,13 +7,14 @@ case $- in
 esac
 
 alias grep='grep -i --color'
-alias ls='exa -a -l --icons'
-export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/
+alias ls='eza -a -l --icons'
+export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/:/home/walid/.cargo/bin
 export GDK_SCALE=1
 export GDK_DPI_SCALE=1
 export QT_SCALE_FACTOR=1
 export EDITOR="nvim"
 export NNN_OPENER=xdg-open
+export GTK_THEME=Adwaita:dark
 export OLLAMA_NUM_GPU=1
 export OLLAMA_GPU_OVERHEAD=0
 
@@ -32,6 +33,29 @@ parse_git_branch() {
 }
 
 PS1="${LAVENDER}\u${RESET}@${PINK}\h ${BLUE}\w${RESET} ${GREEN}\$(parse_git_branch)${RESET}\n${GREEN}\$${RESET} "
+
+extract-smart() {
+    file="$1"
+    [ -f "$file" ] || return 1
+
+    name="$(basename "$file")"
+    dir="${name%.*}"
+
+    tmp="$(mktemp -d)"
+    7z x "$file" -o"$tmp" >/dev/null
+
+    entries=$(ls -1 "$tmp")
+    count=$(echo "$entries" | wc -l)
+
+    if [ "$count" -eq 1 ] && [ -d "$tmp/$entries" ]; then
+        mv "$tmp/$entries" .
+    else
+        mkdir -p "$dir"
+        mv "$tmp"/* "$dir"
+    fi
+
+    rm -rf "$tmp"
+}
 
 extract() {
   if [[ "$1" == "-d" || "$1" == "--dir" ]]; then
@@ -76,3 +100,6 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+export PATH=$PATH:/home/walid/.spicetify
+. "$HOME/.cargo/env"

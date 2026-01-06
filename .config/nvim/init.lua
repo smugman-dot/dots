@@ -15,6 +15,8 @@ vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 vim.api.nvim_create_augroup("FormatAutogroup", { clear = true })
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.softtabstop = 4 -- Backspace and Tab key work as 4 spaces
+vim.opt.autoindent = true -- Copy indent from the previous line
 
 vim.api.nvim_create_autocmd("BufWritePost", {
 	group = "FormatAutogroup",
@@ -34,16 +36,17 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 guifont = "JetBrainsMono Nerd Font:h12"
-require("catppuccin").setup({
-	flavour = "mocha", -- latte, frappe, macchiato, mocha
-	background = { -- :h background
-		light = "latte",
-		dark = "mocha",
-	},
-	transparent_background = true,
-})
-local cat = "catppuccin-mocha"
-vim.cmd("colorscheme catppuccin-mocha")
+-- require("catppuccin").setup({
+-- 	flavour = "mocha", -- latte, frappe, macchiato, mocha
+-- 	background = { -- :h background
+-- 		light = "latte",
+-- 		dark = "mocha",
+-- 	},
+-- 	transparent_background = true,
+-- })
+local dracula = require("dracula")
+dracula.setup({ transparent_bg = true })
+vim.cmd("colorscheme dracula")
 -- Highlight current line
 vim.opt.cursorline = true
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#313244" }) -- Surface0, subtle background
@@ -52,6 +55,7 @@ vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#f5c2e7", bold = true }) -- Line 
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = cat,
+		theme = "dracula-nvim",
 	},
 })
+require('guess-indent').setup {}

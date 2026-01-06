@@ -1,12 +1,14 @@
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("pyright")
-vim.lsp.enable("tsserver")
-vim.lsp.enable("cssls")
-vim.lsp.enable("jsonls")
-vim.lsp.enable("html")
-
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local servers = { "lua_ls", "pyright", "cssls", "jsonls", "html" }
+
+local servers = {
+	"lua_ls",
+	"pyright",
+	"tsserver",
+	"cssls",
+	"jsonls",
+	"html",
+	"rust_analyzer",
+}
 
 for _, server in ipairs(servers) do
 	vim.lsp.config(server, {
@@ -14,6 +16,7 @@ for _, server in ipairs(servers) do
 	})
 	vim.lsp.enable(server)
 end
+
 vim.lsp.config("tsserver", {
 	cmd = { "/usr/bin/typescript-language-server", "--stdio" },
 	capabilities = capabilities,

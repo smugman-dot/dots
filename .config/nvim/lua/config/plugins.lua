@@ -32,18 +32,11 @@ return {
 	},
 	{
 		"sphamba/smear-cursor.nvim",
-		opts = {},
-	},
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"nvim-tree/nvim-web-devicons", -- optional, but recommended
+		opts = {
+			cursor_color = "#663399",
 		},
-		lazy = false, -- neo-tree will lazily load itself
 	},
+	{ "nvim-mini/mini.files" },
 	{ "akinsho/toggleterm.nvim", version = "*", config = true },
 	{
 		"rmagatti/auto-session",
@@ -59,7 +52,6 @@ return {
 		end,
 	},
 	{ "ray-x/lsp_signature.nvim" },
-	{ "zbirenbaum/copilot-cmp" },
 	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {},
@@ -75,9 +67,35 @@ return {
 		},
 	},
 	{
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{
+		"windwp/nvim-autopairs",
+		-- Optional dependency
+		dependencies = { "hrsh7th/nvim-cmp" },
+		config = function()
+			require("nvim-autopairs").setup({})
+			-- If you want to automatically add `(` after selecting a function or method
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
+	},
+	{
+		"Mofiqul/dracula.nvim",
+		lazy = false,
+	},
+	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.8",
-		-- or , branch = '0.1.x',
+		branch = "master", -- or "main" if the repo uses that
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },

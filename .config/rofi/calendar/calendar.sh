@@ -39,8 +39,13 @@ find_day_index() {
 }
 
 calendar_menu() {
-    calendar_header=$(cal -v -- $month $year | head -n 1)
+    # Current time
+    current_time=$(date +"%H:%M:%S")
 
+    # Calendar header
+    calendar_header="$(cal -v -- $month $year | head -n 1)  |  $current_time"
+
+    # Month page
     month_page="$(print_month $month $year)"
     calendar_body="\n\n\n$previous_month\n\n\n\n$month_page\n\n\n\n$next_month\n\n\n"
 
@@ -65,9 +70,10 @@ calendar_menu() {
         selected_row="-selected-row $next_month_index"
     fi
 
+    # Show calendar in rofi with the time in the header
     echo -e "$calendar_body" | rofi -dmenu \
-    -theme ~/.config/rofi/calendar/style.rasi \
-    -p "$calendar_header" $urgent $active $selected_row
+        -theme ~/.config/rofi/calendar/style.rasi \
+        -p "$calendar_header" $urgent $active $selected_row
 }
 
 while [[ true ]]; do
