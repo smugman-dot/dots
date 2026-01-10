@@ -21,4 +21,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-require("lazy").setup(require("config.plugins"))
+require("lazy").setup({
+  spec = require("config.plugins"),
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json"
+})

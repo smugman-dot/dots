@@ -1,11 +1,43 @@
 return {
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{ "neovim/nvim-lspconfig" },
-	{ "mhartington/formatter.nvim" },
 	{ "ggandor/leap.nvim", dependencies = { "tpope/vim-repeat" } },
 	{ "hrsh7th/cmp-path" },
 	{ "folke/which-key.nvim" },
 	{ "zbirenbaum/copilot.lua" },
+	{
+		"stevearc/conform.nvim",
+	},
+	{
+		"YaQia/vim-illuminate"
+	},
+	{
+		"brenoprata10/nvim-highlight-colors"
+	},
+	{
+		"Fildo7525/pretty_hover",
+		event = "LspAttach",
+		opts = {
+			max_width = 80,
+			max_heigh = 15,
+			wrap = true,
+			toggle = true,
+			border = "none",
+		},
+	},
+	{
+		"gbprod/nord.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("nord").setup({})
+			vim.cmd.colorscheme("nord")
+		end,
+	},
+	install = {
+		colorscheme = { "nord" },
+	},
+
 	{
 		"copilotlsp-nvim/copilot-lsp",
 		init = function()
@@ -15,8 +47,6 @@ return {
 				local bufnr = vim.api.nvim_get_current_buf()
 				local state = vim.b[bufnr].nes_state
 				if state then
-					-- Try to jump to the start of the suggestion edit.
-					-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
 					local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
 						or (
 							require("copilot-lsp.nes").apply_pending_nes()
@@ -24,17 +54,10 @@ return {
 						)
 					return nil
 				else
-					-- Resolving the terminal's inability to distinguish between `TAB` and `<C-i>` in normal mode
 					return "<C-i>"
 				end
 			end, { desc = "Accept Copilot NES suggestion", expr = true })
 		end,
-	},
-	{
-		"sphamba/smear-cursor.nvim",
-		opts = {
-			cursor_color = "#663399",
-		},
 	},
 	{ "nvim-mini/mini.files" },
 	{ "akinsho/toggleterm.nvim", version = "*", config = true },
@@ -68,7 +91,6 @@ return {
 	},
 	{
 		"folke/lazydev.nvim",
-		ft = "lua", -- only load on lua files
 		opts = {
 			library = {
 				-- See the configuration section for more details

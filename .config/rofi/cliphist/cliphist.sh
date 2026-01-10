@@ -18,34 +18,27 @@ fi
 
 while true; do
     result=$(
-        rofi -i -dmenu \
+  cliphist list | rofi -i -dmenu \
     -kb-custom-1 "Control-Delete" \
     -kb-custom-2 "Alt-Delete" \
-    -config ~/.config/rofi/cliphist/config.rasi < <(cliphist list | cut -f2- | sed 's/[[:space:]]*$//')
+    -config ~/.config/rofi/cliphist/config.rasi
+)
 
+case "$?" in
+  0)
+    [[ -z "$result" ]] && continue
+    cliphist decode <<<"$result" | wl-copy
+    exit
+    ;;
+  10)
+    cliphist delete <<<"$result"
+    ;;
+  11)
+    cliphist wipe
+    ;;
+  1)
+    exit
+    ;;
+esac
 
-    )
-
-    case "$?" in
-        1)
-            exit
-            ;;
-        0)
-            case "$result" in
-                "")
-                    continue
-                    ;;
-                *)
-                    cliphist decode <<<"$result" | wl-copy
-                    exit
-                    ;;
-            esac
-            ;;
-        10)
-            cliphist delete <<<"$result"
-            ;;
-        11)
-            cliphist wipe
-            ;;
-    esac
 done

@@ -2,11 +2,12 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local servers = {
 	"lua_ls",
-	"pyright",
+	"pyrefly",
 	"tsserver",
 	"cssls",
 	"jsonls",
 	"html",
+	"nil_ls",
 	"rust_analyzer",
 }
 
@@ -21,6 +22,19 @@ vim.lsp.config("tsserver", {
 	cmd = { "/usr/bin/typescript-language-server", "--stdio" },
 	capabilities = capabilities,
 })
+vim.lsp.config["nil_ls"] = {
+	cmd = { "nil" },
+	filetypes = { "nix" },
+	root_markers = { "flake.nix", "default.nix", ".git" },
+	capabilities = caps,
+	settings = {
+		["nil"] = {
+			formatting = {
+				command = { "alejandra" },
+			},
+		},
+	},
+}
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -46,5 +60,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>wf", vim.lsp.buf.format, "format")
 
 		vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "Lsp: code_action" })
+	end,
+})
+
+vim.api.nvim_create_autocmd("CursorHold", {
+	group = vim.api.nvim_create_augroup("LspHover", { clear = true }),
+	callback = function()
+		require("pretty_hover").hover()
 	end,
 })

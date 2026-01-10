@@ -2,6 +2,7 @@ require("config.lazy")
 require("config.lsp_config")
 require("config.cmp_settings")
 require("config.which_key_config")
+require("config.illuminate")
 require("copilot-lsp").setup({ nes = { move_count_threshold = 3 } })
 require("copilot").setup({
 	suggestion = { enabled = true },
@@ -26,6 +27,17 @@ require("leap").opts.equivalence_classes = {
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
 vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
+vim.diagnostic.config({
+	virtual_text = {
+		prefix = "●", -- Could be "●", "■", "▎", etc
+		spacing = 2, -- space between text and diagnostic
+	},
+	signs = true, -- show signs in the gutter
+	underline = true, -- underline problematic code
+	update_in_insert = false, -- false = don't show while typing
+	severity_sort = true, -- sort by severity
+})
+
 require("lsp_signature").setup({
 	bind = true,
 	handler_opts = {
@@ -34,18 +46,13 @@ require("lsp_signature").setup({
 	hint_enable = true,
 	floating_window = true,
 })
-require("formatter").setup({
-	logging = true,
-	filetype = {
-		lua = { require("formatter.filetypes.lua").stylua },
-		python = { require("formatter.filetypes.python").black },
-		javascript = { require("formatter.filetypes.javascript").prettier },
-		html = { require("formatter.filetypes.html").prettier },
-		css = { require("formatter.filetypes.css").prettier },
-		rust = { require("formatter.filetypes.rust").rustfmt },
-		["*"] = {
-			require("formatter.filetypes.any").remove_trailing_whitespace,
-		},
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		nix = { "alejandra" },
+		rust = { "rustfmt", lsp_format = "fallback" },
+		javascript = { "prettier" },
+		css = { "prettier" },
 	},
 })
 require("toggleterm").setup({})
@@ -65,5 +72,11 @@ require("mini.files").setup({
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	callback = function()
 		require("auto-session").save_session()
+	end,
+})
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		require("conform").format({ bufnr = args.buf })
 	end,
 })

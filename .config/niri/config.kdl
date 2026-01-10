@@ -156,34 +156,29 @@ layout {
     width 1.5
 
     // Color of the ring on the active monitor.
-    // Using the Purple accent: #663399
-    active-color "#663399"
+    // Using NixOS Dark Blue: #4d6fb7
+    active-color "#4d6fb7"
 
     // Color of the ring on inactive monitors.
-    // Using the Dark Blue-Gray: #424153
-    inactive-color "#424153"
+    // Using NixOS Muted Blue-Gray: #2a3b58
+    inactive-color "#2a3b58"
 
-    // Optional: Uncomment to use a subtle purple-to-gray gradient on the active window
-    // active-gradient from="#663399" to="#999999" angle=45
-
-    // Optional: Uncomment to use a subtle dark-to-medium gray gradient on inactive monitors
-    // inactive-gradient from="#424153" to="#999999" angle=45 relative-to="workspace-view"
+    // Optional gradients (uncomment if desired)
+    // active-gradient from="#4d6fb7" to="#77b6e1" angle=45
+    // inactive-gradient from="#2a3b58" to="#5e81ac" angle=45 relative-to="workspace-view"
 }
 
-// You can also add a border. It's similar to the focus ring, but always visible.
 border {
-    // Note: The original configuration had 'off' uncommented here.
-    // I am leaving it off as per the original, but if you want the border, comment out the 'off' line.
     off
 
     width 1.5
-    // Active Border Color: Purple accent #663399
-    active-color "#663399"
-    // Inactive Border Color: Dark Blue-Gray #424153
-    inactive-color "#424153"
+    // Active Border Color: NixOS Dark Blue #4d6fb7
+    active-color "#4d6fb7"
+    // Inactive Border Color: Muted Blue-Gray #2a3b58
+    inactive-color "#2a3b58"
 
     // Color of the border around windows that request your attention.
-    urgent-color "#9b0000" // Kept original urgent color for high contrast
+    urgent-color "#9b0000" // Keep high contrast red
 }
 
     // You can enable drop shadows for windows.
@@ -244,11 +239,11 @@ border {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "awww-daemon"
 spawn-at-startup "swayosd-server"
-spawn-at-startup "gentoo-pipewire-launcher"
-spawn-at-startup "wl-paste --watch cliphist store"
+spawn-at-startup "swaync"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+spawn-sh-at-startup "wl-paste --watch cliphist store &"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
@@ -294,7 +289,6 @@ window-rule {
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
     default-column-width {}
 }
-
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
@@ -324,6 +318,10 @@ window-rule {
     draw-border-with-background false
 }
 
+environment {
+    ELECTRON_OZONE_PLATFORM_HINT "wayland"
+    NIXOS_OZONE_WL "1"
+}
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -343,6 +341,7 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Run an Application: rofi" { spawn-sh "rofi -show drun"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+N { spawn-sh "swaync-client -t";}
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -360,14 +359,14 @@ binds {
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume=raise"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume=lower"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "swayosd-client --output-volume=mute"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "swayosd-client --input-volume=mute"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "swayosd-client --output-volume=mute-toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "swayosd-client --input-volume=mute-toggle"; }
     // Example media keys mapping using playerctl.
     // This will work with any MPRIS-enabled media player.
-    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPlay        allow-when-locked=true { spawn-sh "swayosd-client --playerctl=play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn-sh "swayosd-client --playerctl=stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn-sh "swayosd-client --playerctl=prev"; }
+    XF86AudioNext        allow-when-locked=true { spawn-sh "swayosd-client --playerctl=next"; }
 
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
@@ -585,7 +584,7 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    Mod+Shift+Period {spawn-sh "/home/walid/.config/rofi/emoji/emoji.sh";}
+    Mod+Shift+Period {spawn-sh "rofimoji";}
     Mod+S {spawn-sh "/home/walid/.local/scripts/grimshotcpsv.sh";}
     Mod+Shift+S {spawn-sh "/home/walid/.local/scripts/grimshotfullcpsv.sh";}
     Mod+Shift+W {spawn-sh "/home/walid/.local/scripts/rofi-audio-output.sh";}

@@ -49,42 +49,53 @@ custom-shader = shaders/cursor_smear.glsl
 custom-shader = shaders/cursor_warp.glsl
 custom-shader = shaders/ripple_cursor.glsl
 custom-shader-animation=always
-# Basic Colors
-foreground = cccccc
-background = 000000
+# --- Nord Color Palette ---
 
-cursor-color = 663399
-selection-foreground = cccccc
-selection-background = 424153
+# Special Colors
+background = #2e3440
+foreground = #d8dee9
+cursor-color = #8fbcbb
+selection-foreground = #eceff4
+selection-background = #3b4252
 
-# ANSI Colors (0–15)
-palette = 0=#000000
-palette = 1=#424153
-palette = 2=#999999
-palette = 3=#cccccc
-palette = 4=#424153
-palette = 5=#663399
-palette = 6=#999999
-palette = 7=#cccccc
-palette = 8=#424153
-palette = 9=#663399
-palette = 10=#999999
-palette = 11=#cccccc
-palette = 12=#424153
-palette = 13=#663399
-palette = 14=#999999
-palette = 15=#cccccc
+# ANSI Colors (Palette 0-15) - Nord Hex Codes
+# Format: palette = N=#hex
+# Note: No spaces are used around the equals sign in the example from the documentation
 
-# Font and Cursor
-font-family =JetBrainsMono Nerd Font
+# Normal Colors (0-7)
+palette=0=#3b4252 
+palette=1=#bf616a 
+palette=2=#a3be8c 
+palette=3=#ebcb8b 
+palette=4=#81a1c1 
+palette=5=#b48ead 
+palette=6=#88c0d0 
+palette=7=#e5e9f0 
+
+# Bright Colors (8
+palette=8=#4c566a 
+palette=9=#bf616a 
+palette=10=#a3be8c
+palette=11=#ebcb8b
+palette=12=#81a1c1
+palette=13=#b48ead
+palette=14=#88c0d0
+palette=15=#eceff4
+
+
+# --- Font and Appearance Settings ---
+# Re-using the style settings you provided earlier, adapted for Ghostty's likely format.
+font-family = "JetBrainsMono Nerd Font"
 font-size = 10
 cursor-style = block
 
-# Transparency + Blur
-background-opacity = 0.75
-background-blur = true
-
-# Optional appearance tweaks
+# Note on padding: Ghostty documentation uses 'window-padding-x' and 'window-padding-y'
+# only for setting the *theme*, but they may be supported here.
 window-padding-x = 12
 window-padding-y = 8
-term = xterm-kitty
+
+# Transparency/Blur: These fields are not listed in the "Authoring a Custom Theme"
+# section, which suggests they might only be supported in the main config file,
+# but using the hyphenated format from your original request:
+background-opacity = 0.75
+background-blur = true

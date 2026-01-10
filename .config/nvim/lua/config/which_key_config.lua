@@ -19,14 +19,15 @@ vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
 vim.keymap.set("n", "<leader>ss", "<cmd>write<cr>", { desc = "Write File" })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
--- Go to definition
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
 
--- Peek definition (like VSCode peek)
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to Declaration" })
+-- move to next / previous buffer
+vim.keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<leader><leader>", ":buffer #<CR>", { desc = "Last used buffer" })
+vim.keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "Find buffer" })
 
 -- Go to references
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Find References" })
+vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, { desc = "Find References" })
 
 -- Go to implementation
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
@@ -46,11 +47,6 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnosti
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show Diagnostics" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostics List" })
-
-vim.keymap.set("n", "<leader>f", function()
-	require("telescope.builtin").live_grep()
-end, { desc = "Search in all files" })
-
 vim.keymap.set("n", "<leader>e", function()
 	require("mini.files").open(vim.api.nvim_buf_get_name(0))
 end, { desc = "Explorer (mini.files)" })
@@ -62,10 +58,3 @@ end, { silent = true, noremap = true, desc = "toggle signature" })
 vim.keymap.set({ "n" }, "<Leader>k", function()
 	vim.lsp.buf.signature_help()
 end, { silent = true, noremap = true, desc = "toggle signature" })
-
-local wk = require("which-key")
-wk.add({
-	{
-		{ "<leader>wF", "<cmd>FormatWrite<cr>", desc = "Formatter Format" },
-	},
-})

@@ -14,15 +14,10 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 vim.api.nvim_create_augroup("FormatAutogroup", { clear = true })
 vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.softtabstop = 4 -- Backspace and Tab key work as 4 spaces
 vim.opt.autoindent = true -- Copy indent from the previous line
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-	group = "FormatAutogroup",
-	pattern = "*",
-	command = "FormatWrite",
-})
+vim.o.updatetime = 1000 -- in ms, default is 4000
 
 vim.api.nvim_create_autocmd("BufReadPost", {
 	pattern = "*",
@@ -44,9 +39,9 @@ guifont = "JetBrainsMono Nerd Font:h12"
 -- 	},
 -- 	transparent_background = true,
 -- })
-local dracula = require("dracula")
-dracula.setup({ transparent_bg = true })
-vim.cmd("colorscheme dracula")
+local nord = require("nord")
+nord.setup({ transparent = true })
+vim.cmd("colorscheme nord")
 -- Highlight current line
 vim.opt.cursorline = true
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#313244" }) -- Surface0, subtle background
@@ -55,7 +50,7 @@ vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#f5c2e7", bold = true }) -- Line 
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = "dracula-nvim",
+		theme = "nord",
 	},
 })
-require('guess-indent').setup {}
+require("guess-indent").setup({})
