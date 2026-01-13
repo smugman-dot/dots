@@ -9,10 +9,10 @@ return {
 		"stevearc/conform.nvim",
 	},
 	{
-		"YaQia/vim-illuminate"
+		"YaQia/vim-illuminate",
 	},
 	{
-		"brenoprata10/nvim-highlight-colors"
+		"brenoprata10/nvim-highlight-colors",
 	},
 	{
 		"Fildo7525/pretty_hover",
@@ -77,7 +77,9 @@ return {
 	{ "ray-x/lsp_signature.nvim" },
 	{
 		"mason-org/mason-lspconfig.nvim",
-		opts = {},
+		opts = {
+			ensure_installed = { "lua_ls", "rust_analyzer", "basedpyright", "ts_ls" },
+		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
 			"neovim/nvim-lspconfig",

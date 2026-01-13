@@ -2,7 +2,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local servers = {
 	"lua_ls",
-	"pyrefly",
+	"basedpyright",
 	"tsserver",
 	"cssls",
 	"jsonls",
@@ -63,6 +63,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+-- Put this BEFORE your autocmd
+local original_notify = vim.notify
+vim.notify = function(msg, ...)
+	if type(msg) == "string" and (msg:match("no client") or msg:match("hover capability")) then
+		return
+	end
+	original_notify(msg, ...)
+end
+
+-- Then your autocmd
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = vim.api.nvim_create_augroup("LspHover", { clear = true }),
 	callback = function()
