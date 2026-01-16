@@ -1,43 +1,48 @@
 return {
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+	-- Theme
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+		lazy = false,
+	},
+
+	-- LSP
 	{ "neovim/nvim-lspconfig" },
-	{ "ggandor/leap.nvim", dependencies = { "tpope/vim-repeat" } },
-	{ "hrsh7th/cmp-path" },
-	{ "folke/which-key.nvim" },
-	{ "zbirenbaum/copilot.lua" },
 	{
-		"stevearc/conform.nvim",
-	},
-	{
-		"YaQia/vim-illuminate",
-	},
-	{
-		"brenoprata10/nvim-highlight-colors",
-	},
-	{
-		"Fildo7525/pretty_hover",
-		event = "LspAttach",
+		"mason-org/mason-lspconfig.nvim",
 		opts = {
-			max_width = 80,
-			max_heigh = 15,
-			wrap = true,
-			toggle = true,
-			border = "none",
+			ensure_installed = { "lua_ls", "rust_analyzer", "basedpyright" },
+		},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
 		},
 	},
 	{
-		"gbprod/nord.nvim",
-		lazy = false,
-		priority = 1000,
-		config = function()
-			require("nord").setup({})
-			vim.cmd.colorscheme("nord")
-		end,
-	},
-	install = {
-		colorscheme = { "nord" },
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
 	},
 
+	-- Completion
+	{
+		"hrsh7th/nvim-cmp",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-vsnip",
+			"hrsh7th/vim-vsnip",
+			"rafamadriz/friendly-snippets",
+		},
+	},
+
+	-- Copilot
+	{ "zbirenbaum/copilot.lua" },
 	{
 		"copilotlsp-nvim/copilot-lsp",
 		init = function()
@@ -59,8 +64,69 @@ return {
 			end, { desc = "Accept Copilot NES suggestion", expr = true })
 		end,
 	},
-	{ "nvim-mini/mini.files" },
+
+	-- Treesitter
+	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+
+	-- Telescope (fuzzy finder)
+	{
+		"nvim-telescope/telescope.nvim",
+		branch = "master",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+
+	-- Keybinding help
+	{ "folke/which-key.nvim" },
+
+	-- Motion
+	{ "ggandor/leap.nvim", dependencies = { "tpope/vim-repeat" } },
+
+	-- Terminal
 	{ "akinsho/toggleterm.nvim", version = "*", config = true },
+
+	-- File explorer
+	{ "nvim-mini/mini.files" },
+
+	-- Formatting
+	{ "stevearc/conform.nvim" },
+
+	-- Highlighting and visual features
+	{ "YaQia/vim-illuminate" },
+	{ "brenoprata10/nvim-highlight-colors" },
+	{
+		"Fildo7525/pretty_hover",
+		event = "LspAttach",
+		opts = {
+			max_width = 80,
+			max_heigh = 15,
+			wrap = true,
+			toggle = true,
+			border = "none",
+		},
+	},
+
+	-- UI enhancements
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+	},
+	{ "ray-x/lsp_signature.nvim" },
+
+	-- Auto-pairing
+	{
+		"windwp/nvim-autopairs",
+		dependencies = { "hrsh7th/nvim-cmp" },
+		config = function()
+			require("nvim-autopairs").setup({})
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
+	},
+
+	-- Session management
 	{
 		"rmagatti/auto-session",
 		lazy = false,
@@ -68,73 +134,46 @@ return {
 			suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 		},
 	},
+
+	-- Indent detection
 	{
 		"nmac427/guess-indent.nvim",
 		config = function()
 			require("guess-indent").setup({})
 		end,
 	},
-	{ "ray-x/lsp_signature.nvim" },
-	{
-		"mason-org/mason-lspconfig.nvim",
-		opts = {
-			ensure_installed = { "lua_ls", "rust_analyzer", "basedpyright", "ts_ls" },
-		},
-		dependencies = {
-			{ "mason-org/mason.nvim", opts = {} },
-			"neovim/nvim-lspconfig",
-		},
-	},
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-	},
+
+	-- Dev tools
 	{
 		"folke/lazydev.nvim",
 		opts = {
 			library = {
-				-- See the configuration section for more details
-				-- Load luvit types when the `vim.uv` word is found
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
 	},
 	{
-		"windwp/nvim-autopairs",
-		-- Optional dependency
-		dependencies = { "hrsh7th/nvim-cmp" },
-		config = function()
-			require("nvim-autopairs").setup({})
-			-- If you want to automatically add `(` after selecting a function or method
-			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			local cmp = require("cmp")
-			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-		end,
+		"MeanderingProgrammer/render-markdown.nvim",
+		-- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
 	},
-	{
-		"Mofiqul/dracula.nvim",
-		lazy = false,
-	},
-	{
-		"nvim-telescope/telescope.nvim",
-		branch = "master", -- or "main" if the repo uses that
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	{
-		"hrsh7th/nvim-cmp",
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-			"hrsh7th/cmp-vsnip",
-			"hrsh7th/vim-vsnip",
-			"rafamadriz/friendly-snippets",
-		},
-	},
+
+	-- Alternative themes (commented out, using catppuccin instead)
+	-- {
+	-- 	"gbprod/nord.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		require("nord").setup({})
+	-- 		vim.cmd.colorscheme("nord")
+	-- 	end,
+	-- },
+	-- {
+	-- 	"Mofiqul/dracula.nvim",
+	-- 	lazy = false,
+	-- },
 }

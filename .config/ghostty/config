@@ -85,7 +85,7 @@ palette=15=#eceff4
 
 # --- Font and Appearance Settings ---
 # Re-using the style settings you provided earlier, adapted for Ghostty's likely format.
-font-family = "JetBrainsMono Nerd Font"
+font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 10
 cursor-style = block
 

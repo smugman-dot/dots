@@ -1,14 +1,15 @@
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+-- Configure language servers
 local servers = {
 	"lua_ls",
 	"basedpyright",
-	"tsserver",
 	"cssls",
 	"jsonls",
 	"html",
-	"nil_ls",
 	"rust_analyzer",
+	"eslint",
+	"emmet",
 }
 
 for _, server in ipairs(servers) do
@@ -18,25 +19,19 @@ for _, server in ipairs(servers) do
 	vim.lsp.enable(server)
 end
 
-vim.lsp.config("tsserver", {
-	cmd = { "/usr/bin/typescript-language-server", "--stdio" },
-	capabilities = capabilities,
-})
-vim.lsp.config["nil_ls"] = {
-	cmd = { "nil" },
-	filetypes = { "nix" },
-	root_markers = { "flake.nix", "default.nix", ".git" },
-	capabilities = caps,
-	settings = {
-		["nil"] = {
-			formatting = {
-				command = { "alejandra" },
-			},
-		},
-	},
-}
--- Use LspAttach autocommand to only map the following keys
--- after the language server attaches to the current buffer
+-- Suppress irrelevant LSP notifications
+local original_notify = vim.notify
+vim.notify = function(msg, ...)
+	if
+		type(msg) == "string"
+		and (msg:match("no client") or msg:match("hover capability") or msg:match("No information"))
+	then
+		return
+	end
+	original_notify(msg, ...)
+end
+
+-- LSP keybindings (registered on LspAttach)
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -45,34 +40,33 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 
 		local tele = require("telescope.builtin")
+
+		-- Navigation
 		map("gd", tele.lsp_definitions, "Goto Definition")
+		map("gr", tele.lsp_references, "Goto References")
+		map("gi", tele.lsp_implementations, "Goto Impl")
+		map("<leader>ft", tele.lsp_type_definitions, "Goto Type")
+
+		-- Symbols
 		map("<leader>fs", tele.lsp_document_symbols, "Doc Symbols")
 		map("<leader>fS", tele.lsp_dynamic_workspace_symbols, "Dynamic Symbols")
-		map("<leader>ft", tele.lsp_type_definitions, "Goto Type")
-		map("<leader>fr", tele.lsp_references, "Goto References")
-		map("<leader>fi", tele.lsp_implementations, "Goto Impl")
 
-		map("K", vim.lsp.buf.hover, "hover")
-		map("<leader>E", vim.diagnostic.open_float, "diagnostic")
-		map("<leader>k", vim.lsp.buf.signature_help, "sig help")
-		map("<leader>rn", vim.lsp.buf.rename, "rename")
-		map("<leader>ca", vim.lsp.buf.code_action, "code action")
-		map("<leader>wf", vim.lsp.buf.format, "format")
+		-- Code actions and refactoring
+		map("<leader>rn", vim.lsp.buf.rename, "Rename")
+		map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
+		map("<leader>wf", vim.lsp.buf.format, "Format")
 
+		-- Help and diagnostics
+		map("K", vim.lsp.buf.hover, "Hover")
+		map("<leader>k", vim.lsp.buf.signature_help, "Signature Help")
+		map("<leader>E", vim.diagnostic.open_float, "Show Diagnostic")
+
+		-- Visual mode code actions
 		vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "Lsp: code_action" })
 	end,
 })
 
--- Put this BEFORE your autocmd
-local original_notify = vim.notify
-vim.notify = function(msg, ...)
-	if type(msg) == "string" and (msg:match("no client") or msg:match("hover capability")) then
-		return
-	end
-	original_notify(msg, ...)
-end
-
--- Then your autocmd
+-- Pretty hover on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = vim.api.nvim_create_augroup("LspHover", { clear = true }),
 	callback = function()

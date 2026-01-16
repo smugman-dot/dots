@@ -14,7 +14,16 @@ require("nvim-treesitter").setup({
 	},
 	install_dir = vim.fn.stdpath("data") .. "/site",
 })
-
+require("nvim-treesitter").install({
+	"rust",
+	"javascript",
+	"zig",
+	"typescript",
+	"python",
+	"html",
+	"jsx",
+	"tsx",
+})
 require("leap").opts.preview = function(ch0, ch1, ch2)
 	return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
 end
@@ -24,6 +33,15 @@ require("leap").opts.equivalence_classes = {
 	")]}",
 	"'\"`",
 }
+require("toggleterm").setup({
+	direction = "float",
+	float_opts = {
+		border = "single",
+	},
+	open_mapping = [[<C-\>]],
+	start_in_insert = true,
+})
+
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
 vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
@@ -38,6 +56,10 @@ vim.diagnostic.config({
 	severity_sort = true, -- sort by severity
 })
 
+require("render-markdown").setup({
+	completions = { lsp = { enabled = true } },
+})
+
 require("lsp_signature").setup({
 	bind = true,
 	handler_opts = {
@@ -46,17 +68,25 @@ require("lsp_signature").setup({
 	hint_enable = true,
 	floating_window = true,
 })
+
+-- Code formatting with conform.nvim
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		nix = { "alejandra" },
 		rust = { "rustfmt", lsp_format = "fallback" },
 		javascript = { "prettier" },
+		javascriptreact = { "prettier" },
+		typescript = { "prettier" },
+		typescriptreact = { "prettier" },
 		css = { "prettier" },
 	},
 })
-require("toggleterm").setup({})
-require("auto-session").setup({})
+
+-- Auto-session setup
+require("auto-session").setup({
+	suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+})
 require("mini.files").setup({
 	options = {
 		use_as_default_explorer = true,
@@ -80,3 +110,14 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		require("conform").format({ bufnr = args.buf })
 	end,
 })
+
+-- Lualine status bar
+require("lualine").setup({
+	options = {
+		icons_enabled = true,
+		theme = "auto",
+	},
+})
+
+-- Auto-indent detection
+require("guess-indent").setup({})

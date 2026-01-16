@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-fastfetch
+fastfetch --config nyarch
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
@@ -102,4 +102,3 @@ function y() {
 }
 
 export PATH=$PATH:/home/walid/.spicetify
-. "$HOME/.cargo/env"

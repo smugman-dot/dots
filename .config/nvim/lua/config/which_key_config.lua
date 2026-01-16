@@ -1,60 +1,52 @@
 local tele_built = require("telescope.builtin")
 
-vim.keymap.set("i", "jk", "<Esc>")
-vim.keymap.set("x", "<leader>p", [["_dP]])
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "<leader>q", ":bd<CR>", { desc = "Close buffer" })
-vim.keymap.set("n", "<leader>ff", tele_built.find_files, { desc = "Find Files" })
-vim.keymap.set("n", "<leader>fg", tele_built.live_grep, { desc = "Grep" })
-vim.keymap.set("n", "<leader>fb", tele_built.buffers, { desc = "Find Buffers" })
-vim.keymap.set("n", "<leader>fh", tele_built.help_tags, { desc = "Find Help" })
-vim.keymap.set("n", "<leader>fc", tele_built.command_history, { desc = "COMMAND HISTORY" })
-vim.keymap.set("n", "<leader>e", tele_built.diagnostics, { desc = "Diagnostics" })
-vim.keymap.set("n", "<leader>gs", tele_built.git_status, { desc = "Git Status" })
-vim.keymap.set("n", "<leader>t", tele_built.builtin, { desc = "Telescope" })
-vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
-vim.keymap.set("n", "<leader>ss", "<cmd>write<cr>", { desc = "Write File" })
-vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
+-- ===== ESCAPE SEQUENCES =====
+vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
--- move to next / previous buffer
+-- ===== EDITING SHORTCUTS =====
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without yanking selection" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump down half-page, center cursor" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump up half-page, center cursor" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result, center cursor" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result, center cursor" })
+
+-- ===== NAVIGATION: BUFFERS =====
 vim.keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
 vim.keymap.set("n", "<leader><leader>", ":buffer #<CR>", { desc = "Last used buffer" })
-vim.keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "Find buffer" })
+vim.keymap.set("n", "<leader>q", ":bd<CR>", { desc = "Close buffer" })
 
--- Go to references
-vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, { desc = "Find References" })
-
--- Go to implementation
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
-
--- Show type / signature help
-vim.keymap.set("n", "<leader>ds", vim.lsp.buf.document_symbol, { desc = "Document Symbols" })
-vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, { desc = "Workspace Symbols" })
-
--- Quick code actions (fix, refactor, import)
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
-vim.keymap.set("x", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" }) -- for visual selection
-
+-- ===== TELESCOPE: FIND =====
+vim.keymap.set("n", "<leader>ff", tele_built.find_files, { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fg", tele_built.live_grep, { desc = "Live Grep" })
+vim.keymap.set("n", "<leader>fb", tele_built.buffers, { desc = "Find Buffers" })
+vim.keymap.set("n", "<leader>fh", tele_built.help_tags, { desc = "Find Help Tags" })
 vim.keymap.set("n", "<leader>fbf", tele_built.current_buffer_fuzzy_find, { desc = "Fuzzy Find in Buffer" })
 
--- Navigate diagnostics
+-- ===== TELESCOPE: UTILITIES =====
+vim.keymap.set("n", "<leader>fc", tele_built.command_history, { desc = "Command History" })
+vim.keymap.set("n", "<leader>t", tele_built.builtin, { desc = "Telescope Builtin" })
+vim.keymap.set("n", "<leader>gs", tele_built.git_status, { desc = "Git Status" })
+
+-- ===== DIAGNOSTICS =====
+vim.keymap.set("n", "<leader>e", tele_built.diagnostics, { desc = "Diagnostics (Telescope)" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show Diagnostics" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostics List" })
+
+-- ===== FILE EXPLORER =====
 vim.keymap.set("n", "<leader>e", function()
 	require("mini.files").open(vim.api.nvim_buf_get_name(0))
-end, { desc = "Explorer (mini.files)" })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show hover info" })
-vim.keymap.set({ "n" }, "<C-k>", function()
-	require("lsp_signature").toggle_float_win()
-end, { silent = true, noremap = true, desc = "toggle signature" })
+end, { desc = "File Explorer (mini.files)" })
 
-vim.keymap.set({ "n" }, "<Leader>k", function()
-	vim.lsp.buf.signature_help()
-end, { silent = true, noremap = true, desc = "toggle signature" })
+-- ===== GIT =====
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+
+-- ===== SAVE/FORMAT =====
+vim.keymap.set("n", "<leader>ss", "<cmd>write<cr>", { desc = "Write File" })
+
+-- ===== INFO POPUPS =====
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show Hover Info" })
+vim.keymap.set("n", "<C-k>", function()
+	require("lsp_signature").toggle_float_win()
+end, { desc = "Toggle Signature Help" })
+vim.keymap.set("n", "<Leader>k", vim.lsp.buf.signature_help, { desc = "Signature Help" })
