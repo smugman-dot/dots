@@ -93,17 +93,7 @@ return {
 	-- Highlighting and visual features
 	{ "YaQia/vim-illuminate" },
 	{ "brenoprata10/nvim-highlight-colors" },
-	{
-		"Fildo7525/pretty_hover",
-		event = "LspAttach",
-		opts = {
-			max_width = 80,
-			max_heigh = 15,
-			wrap = true,
-			toggle = true,
-			border = "none",
-		},
-	},
+	{ "nvimdev/indentmini.nvim" },
 
 	-- UI enhancements
 	{

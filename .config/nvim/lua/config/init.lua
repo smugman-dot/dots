@@ -56,10 +56,6 @@ vim.diagnostic.config({
 	severity_sort = true, -- sort by severity
 })
 
-require("render-markdown").setup({
-	completions = { lsp = { enabled = true } },
-})
-
 require("lsp_signature").setup({
 	bind = true,
 	handler_opts = {

@@ -29,7 +29,7 @@ vim.keymap.set("n", "<leader>t", tele_built.builtin, { desc = "Telescope Builtin
 vim.keymap.set("n", "<leader>gs", tele_built.git_status, { desc = "Git Status" })
 
 -- ===== DIAGNOSTICS =====
-vim.keymap.set("n", "<leader>e", tele_built.diagnostics, { desc = "Diagnostics (Telescope)" })
+vim.keymap.set("n", "<leader>de", tele_built.diagnostics, { desc = "Diagnostics (Telescope)" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
 

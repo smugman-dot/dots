@@ -9,7 +9,6 @@ local servers = {
 	"html",
 	"rust_analyzer",
 	"eslint",
-	"emmet",
 }
 
 for _, server in ipairs(servers) do
@@ -43,7 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Navigation
 		map("gd", tele.lsp_definitions, "Goto Definition")
-		map("gr", tele.lsp_references, "Goto References")
+		map("<leader>gr", tele.lsp_references, "Goto References")
 		map("gi", tele.lsp_implementations, "Goto Impl")
 		map("<leader>ft", tele.lsp_type_definitions, "Goto Type")
 
@@ -65,11 +64,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "Lsp: code_action" })
 	end,
 })
-
--- Pretty hover on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = vim.api.nvim_create_augroup("LspHover", { clear = true }),
 	callback = function()
-		require("pretty_hover").hover()
+		local clients = vim.lsp.get_clients({ bufnr = 0 })
+		for _, client in ipairs(clients) do
+			if client.server_capabilities.hoverProvider then
+				vim.lsp.buf.hover()
+				break
+			end
+		end
 	end,
 })
