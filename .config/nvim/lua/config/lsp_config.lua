@@ -76,3 +76,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 		end
 	end,
 })
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or "rounded"
+	opts.focusable = false
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end

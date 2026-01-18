@@ -102,7 +102,11 @@ require("catppuccin").setup({
 	},
 	transparent_background = true,
 })
-
+require("rose-pine").setup({
+	styles = {
+		transparency = true,
+	},
+})
 vim.cmd.colorscheme("catppuccin")
 
 -- Highlight current line number

@@ -1,4 +1,6 @@
 local cmp = require("cmp")
+local luasnip = require("luasnip")
+local neotab = require("neotab")
 local copilot = require("copilot.suggestion")
 
 -- Accept Copilot suggestion if visible
@@ -10,7 +12,6 @@ local function accept_copilot()
 	return false
 end
 
--- Smart tab: Copilot > cmp next item > fallback
 local function smart_tab(fallback)
 	if accept_copilot() then
 		return
@@ -44,7 +45,15 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 
 		-- Tab: Copilot or cmp next
-		["<Tab>"] = cmp.mapping(smart_tab, { "i", "s" }),
+		["<Tab>"] = cmp.mapping(function()
+			if cmp.visible() then
+				cmp.select_next_item()
+			elseif luasnip.jumpable(1) then
+				luasnip.jump(1)
+			else
+				neotab.tabout()
+			end
+		end),
 
 		-- Shift+Tab: cmp prev
 		["<S-Tab>"] = cmp.mapping(smart_s_tab, { "i", "s" }),
@@ -64,7 +73,5 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "path" },
 		{ name = "luasnip" },
-	}, {
-		{ name = "buffer" },
 	}),
 })

@@ -6,6 +6,7 @@ return {
 		priority = 1000,
 		lazy = false,
 	},
+	{ "rose-pine/neovim", name = "rose-pine" },
 
 	-- LSP
 	{ "neovim/nvim-lspconfig" },
@@ -93,7 +94,7 @@ return {
 	-- Highlighting and visual features
 	{ "YaQia/vim-illuminate" },
 	{ "brenoprata10/nvim-highlight-colors" },
-	{ "nvimdev/indentmini.nvim" },
+	{ "nvim-mini/mini.indentscope" },
 
 	-- UI enhancements
 	{
@@ -115,6 +116,14 @@ return {
 			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
 	},
+	{
+		"kawre/neotab.nvim",
+		event = "InsertEnter",
+		opts = {
+			tabkey = "",
+		},
+	},
+	{ "wakatime/vim-wakatime", lazy = false },
 
 	-- Session management
 	{

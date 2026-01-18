@@ -95,6 +95,7 @@ require("mini.files").setup({
 		width_nofocus = 15,
 	},
 })
+require("mini.indentscope").setup()
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	callback = function()
 		require("auto-session").save_session()
