@@ -1,4 +1,6 @@
 input {
+    warp-mouse-to-focus
+    focus-follows-mouse
     keyboard {
         xkb {
             layout "us,ara"
@@ -15,7 +17,7 @@ input {
     }
 
     mouse {
-         accel-profile "flat"
+        accel-profile "flat"
     }
 
     trackpoint {
@@ -43,8 +45,8 @@ cursor {
 
 layout {
     gaps 8
-
     center-focused-column "never"
+
 
     preset-column-widths {
         proportion 0.33333
@@ -261,8 +263,8 @@ binds {
     Mod+S {spawn-sh "/home/walid/.local/scripts/grimshotcpsv.sh";}
     Mod+Shift+S {spawn-sh "/home/walid/.local/scripts/grimshotfullcpsv.sh";}
     Mod+Shift+W {spawn-sh "/home/walid/.local/scripts/rofi-audio-output.sh";}
-    Mod+Shift+C {spawn-sh "/home/walid/.config/rofi/cliphist/cliphist.sh";}
-    Mod+P {spawn-sh "/home/walid/.config/rofi/powermenu/powermenu.sh";}
+    Mod+Shift+C {spawn-sh "/home/walid/.local/scripts/cliphist.sh";}
+    Mod+P {spawn-sh "/home/walid/.local/scripts/powermenu.sh";}
     Mod+Shift+D {spawn-sh "/home/walid/.config/rofi/calendar/calendar.sh";}
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }

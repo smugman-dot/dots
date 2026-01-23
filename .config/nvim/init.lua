@@ -22,6 +22,7 @@ vim.opt.scrolloff = 10
 vim.opt.sidescrolloff = 5
 vim.opt.sidescroll = 1
 vim.o.updatetime = 2000
+vim.opt.signcolumn = "yes"
 
 -- Session/buffer options
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
@@ -102,11 +103,7 @@ require("catppuccin").setup({
 	},
 	transparent_background = true,
 })
-require("rose-pine").setup({
-	styles = {
-		transparency = true,
-	},
-})
+
 vim.cmd.colorscheme("catppuccin")
 
 -- Highlight current line number

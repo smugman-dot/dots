@@ -15,6 +15,8 @@ elif [[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
   source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
+source <(fzf --zsh)
+
 # History Configuration
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -74,6 +76,7 @@ ${colors[cyan]}╰─${colors[magenta]}❯${colors[reset]} '
 
 
 RPROMPT='${colors[gray]}%D{%Y-%m-%d %H:%M:%S}${colors[reset]}'
+KEYTIMEOUT=1
 
 # ──────────────────────────────────────────────────────────────────
 # Aliases
@@ -120,6 +123,16 @@ extract() {
   fi
 }
 
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+
+
 # ──────────────────────────────────────────────────────────────────
 # Key Bindings
 # ──────────────────────────────────────────────────────────────────
@@ -127,7 +140,7 @@ extract() {
 bindkey -e  # Emacs mode
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-
+bindkey "^R" history-incremental-search-backward
 
 bindkey -v  # vim mode
 # ──────────────────────────────────────────────────────────────────
@@ -138,9 +151,11 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export PAGER='less'
 
+export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/:/home/walid/.cargo/bin
+
 # LS Colors (matching your theme)
 export LS_COLORS='di=1;38;2;73;189;199:fi=0;38;2;202;211;245:ln=0;38;2;245;189;230:ex=1;38;2;166;218;149'
 
 # ──────────────────────────────────────────────────────────────────
 
-fastfetch --config nyarch
+fastfetch --config os
