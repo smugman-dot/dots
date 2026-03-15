@@ -88,7 +88,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # List
-alias ls='exa -a -l --icons --color=auto'
+alias ls='eza -a -l --icons --color=auto'
 
 alias grep='grep -ai --color=auto'
 
@@ -130,8 +130,6 @@ function y() {
 	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
-
-
 
 # ──────────────────────────────────────────────────────────────────
 # Key Bindings

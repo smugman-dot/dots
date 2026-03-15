@@ -6,7 +6,7 @@ return {
 		priority = 1000,
 		lazy = false,
 	},
-	{ "rose-pine/neovim", name = "rose-pine" },
+	{ "rose-pine/neovim",         name = "rose-pine" },
 
 	-- LSP
 	{ "neovim/nvim-lspconfig" },
@@ -44,7 +44,7 @@ return {
 	},
 
 	-- Treesitter
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+	{ "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" },
 
 	-- Telescope (fuzzy finder)
 	{
@@ -57,10 +57,10 @@ return {
 	{ "folke/which-key.nvim" },
 
 	-- Motion
-	{ "ggandor/leap.nvim", dependencies = { "tpope/vim-repeat" } },
+	{ url = "https://codeberg.org/andyg/leap.nvim", dependencies = { "tpope/vim-repeat" } },
 
 	-- Terminal
-	{ "akinsho/toggleterm.nvim", version = "*", config = true },
+	{ "akinsho/toggleterm.nvim",                    version = "*",                        config = true },
 
 	-- File explorer
 	{ "nvim-mini/mini.files" },
@@ -100,7 +100,7 @@ return {
 			tabkey = "",
 		},
 	},
-	{ "wakatime/vim-wakatime", lazy = false },
+	{ "wakatime/vim-wakatime",   lazy = false },
 
 	-- Session management
 	{
