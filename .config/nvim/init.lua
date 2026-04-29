@@ -1,5 +1,16 @@
 require("config")
 
+-- Minuet setup
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	callback = function()
+		-- Ensure Minuet is properly loaded
+		if vim.fn.exists(":Minuet") == 2 then
+			-- Minuet commands are available
+		end
+	end,
+})
+--
 -- Editor behavior
 vim.opt.backup = false
 vim.opt.writebackup = false
@@ -59,7 +70,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 -- GUI font
 guifont = "JetBrainsMono Nerd Font:h12"
-
 -- Catppuccin theme setup
 require("catppuccin").setup({
 	flavour = "macchiato", -- Using Macchiato as the base

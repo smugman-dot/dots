@@ -50,3 +50,19 @@ vim.keymap.set("n", "<C-k>", function()
 	require("lsp_signature").toggle_float_win()
 end, { desc = "Toggle Signature Help" })
 vim.keymap.set("n", "<Leader>k", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+
+-- Move to the right window with Ctrl-l
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Focus right' })
+-- Move to the left window with Ctrl-h
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Focus left' })
+-- Use Esc to exit terminal mode
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
+
+-- Ask pi with the current buffer as context
+vim.keymap.set("n", "<leader>ai", ":PiAsk<CR>", { desc = "Ask pi" })
+
+-- Ask pi with visual selection as context
+vim.keymap.set("v", "<leader>ai", ":PiAskSelection<CR>", { desc = "Ask pi (selection)" })
+
+-- Or use jk like many do for Normal mode
+vim.keymap.set('t', 'jk', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })

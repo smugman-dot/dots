@@ -1,9 +1,86 @@
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require("lspconfig").util.default_config
+local vtsls_config = {
+	cmd = { "vtsls", "--stdio" },
+	init_options = {
+		hostInfo = "neovim",
+	},
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					vue_typescript_plugin,
+				},
+			},
+		},
+	},
+	filetypes = {
+		"typescript",
+		"javascript",
+		"vue",
+	},
+	reuse_client = function()
+		return true
+	end,
+}
+vim.lsp.config("vtsls", vtsls_config)
+local servers = { "vtsls", "pyright", "bashls", "clangd", "rust_analyzer", "lua_ls" }
+
+for _, server in ipairs(servers) do
+	vim.lsp.enable(server)
+end
 lspconfig_defaults.capabilities =
 	vim.tbl_deep_extend("force", lspconfig_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+require('minuet').setup {
+	lsp = {
+		inline_completion = {
+			enable = true,
+		},
+	},
+	provider = 'openai_fim_compatible',
+	n_completions = 1, -- recommend for local model for resource saving
+	-- I recommend beginning with a small context window size and incrementally
+	-- expanding it, depending on your local computing power. A context window
+	-- of 512, serves as an good starting point to estimate your computing
+	-- power. Once you have a reliable estimate of your local computing power,
+	-- you should adjust the context window to a larger value.
+	context_window = 4096,
+	cmp = {
+		enable_auto_complete = false,
+	},
+
+	provider_options = {
+		openai_fim_compatible = {
+			-- For Windows users, TERM may not be present in environment variables.
+			-- Consider using APPDATA instead.
+			api_key = 'TERM',
+			name = 'Llama.cpp',
+			end_point = 'http://localhost:8080/v1/completions',
+			-- The model is set by the llama-cpp server and cannot be altered
+			-- post-launch.
+			model = 'Qwen3-Coder-30B-A3B-Instruct-Q3_K_S',
+			optional = {
+				max_tokens = 128,
+				top_p = 0.9,
+			},
+			-- Llama.cpp does not support the `suffix` option in FIM completion.
+			-- Therefore, we must disable it and manually populate the special
+			-- tokens required for FIM completion.
+			template = {
+				prompt = function(context_before_cursor, context_after_cursor, _)
+					return '<|fim_prefix|>'
+						.. context_before_cursor
+						.. '<|fim_suffix|>'
+						.. context_after_cursor
+						.. '<|fim_middle|>'
+				end,
+				suffix = false,
+			},
+		},
+	},
+}
 -- This is where you enable features that only work
 -- if there is a language server active in the file
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -22,18 +99,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 	end,
 })
-
 local cmp = require("cmp")
 cmp.setup({
 	sources = {
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
+		{ name = 'minuet' },
 		{ name = "path" },
 	},
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
 		end,
+	},
+	performance = {
+		fetching_timeout = 2000,
 	},
 	mapping = cmp.mapping.preset.insert({
 		-- Super tab
@@ -64,6 +144,10 @@ cmp.setup({
 				fallback()
 			end
 		end, { "i", "s" }),
+
+		["<C-Space>"] = require("minuet").make_cmp_map(),
+
+
 	}),
 })
 
