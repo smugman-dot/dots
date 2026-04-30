@@ -137,6 +137,7 @@ binds {
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
     Mod+Shift+W {spawn-sh "/home/walid/scripts/rofi-audio-output.sh";}
     Mod+Shift+V {spawn-sh "/home/walid/scripts/cliphist.sh";}
+    Mod+Shift+Period {spawn-sh "/home/walid/scripts/emoji-picker.sh --type";}
     Mod+Shift+Q {spawn-sh "/home/walid/scripts/powermenu.sh";}
     Mod+S {spawn-sh "/home/walid/scripts/grimshotcpsv.sh";}
     Mod+Shift+S {spawn-sh "/home/walid/scripts/grimshotfullcpsv.sh";}
