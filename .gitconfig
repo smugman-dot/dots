@@ -1,0 +1,6 @@
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret
+	helper = oauth
+[user]
+	email = wbsmoke101@gmail.com
+	name = smugman-dot
