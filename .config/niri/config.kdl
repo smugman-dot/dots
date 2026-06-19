@@ -17,9 +17,6 @@ input {
 
         numlock
     }
-
-
-
     mouse {
         accel-profile "flat"
     }
@@ -52,7 +49,7 @@ layout {
 
     default-column-width { proportion 0.5; }
     focus-ring {
-        width 1.5
+        width 1
         active-color "#7fc8ff"
         inactive-color "#505050"
     }
@@ -73,7 +70,7 @@ layout {
 spawn-at-startup "waybar"
 spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-sh-at-startup "stash watch"
-spawn-sh-at-startup "swaybg -i /home/walid/Pictures/wallhaven-8gdg62.jpg"
+spawn-sh-at-startup "swaybg -i /home/walid/wallpapers/abstract-swirls.jpg"
 hotkey-overlay {
     skip-at-startup
 }
@@ -82,7 +79,7 @@ blur {
     // off
     passes 3
     offset 3.0
-    noise 0.2
+    noise 0.154
     saturation 1.5
 }
 
@@ -96,6 +93,10 @@ window-rule {
         blur true
         xray true
     }
+}
+window-rule {
+    match app-id="steam_app_default"
+    open-fullscreen true
 }
 
 // Open the Firefox picture-in-picture player as floating by default.

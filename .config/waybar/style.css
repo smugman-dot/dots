@@ -87,6 +87,7 @@ window#waybar {
 #custom-notif,
 #custom-recorder,
 #custom-easyeffects,
+#custom-gpu,
 #cpu,
 #custom-scratchOutput,
 #memory {
@@ -103,8 +104,10 @@ window#waybar {
 #temperature,
 #clock.2,
 #custom-cal,
+#network,
 #custom-audio,
 #wireplumber,
+#custom-gputemp,
 #submap {
   padding: 0px 12px;
     margin: 1px 0px;
@@ -284,7 +287,14 @@ window#waybar {
     color: @flamingo;
   }
 }
-
+#network.disconnected {
+  background: @red;
+  color: @crust;
+  font-weight: bold;
+}
+#network {
+  min-width: 180px;
+}
 @keyframes blinker {
   50% {
     /* opacity: 0.1; */

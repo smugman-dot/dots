@@ -86,6 +86,7 @@ KEYTIMEOUT=1
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias nvim='helix'
 
 # List
 alias ls='eza -a -l --icons --color=auto'
@@ -101,27 +102,6 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-# Extract archives
-extract() {
-  if [ -f $1 ]; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1     ;;
-      *.tar.gz)    tar xzf $1     ;;
-      *.bz2)       bunzip2 $1     ;;
-      *.rar)       unrar e $1     ;;
-      *.gz)        gunzip $1      ;;
-      *.tar)       tar xf $1      ;;
-      *.tbz2)      tar xjf $1     ;;
-      *.tgz)       tar xzf $1     ;;
-      *.zip)       unzip $1       ;;
-      *.Z)         uncompress $1  ;;
-      *.7z)        7z x $1        ;;
-      *)           echo "'$1' cannot be extracted via extract()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -145,15 +125,15 @@ bindkey -v  # vim mode
 # Environment
 # ──────────────────────────────────────────────────────────────────
 
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR='helix'
+export VISUAL='helix'
 export PAGER='less'
 
 export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/:/home/walid/.cargo/bin
-
-# LS Colors (matching your theme)
 export LS_COLORS='di=1;38;2;73;189;199:fi=0;38;2;202;211;245:ln=0;38;2;245;189;230:ex=1;38;2;166;218;149'
 
 # ──────────────────────────────────────────────────────────────────
 
 fastfetch --config os
+
+export PATH=$PATH:/home/walid/.spicetify

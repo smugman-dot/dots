@@ -8,6 +8,7 @@
     "clock#2",
     "clock#3",
     "temperature",
+    "custom/gputemp",
     "custom/music"
   ],
   "modules-center": [
@@ -17,8 +18,10 @@
     // "custom/notes",
     // "custom/cal",
     "custom/recorder",
+    "network",
     "custom/wakapi",
     "memory",
+    "custom/gpu",
     "cpu",
     "custom/audio",
     "tray"
@@ -111,6 +114,13 @@
     "format-muted": "󰖁 {volume}",
     "on-click-right": "pwvucontrol"
   },
+  "network": {
+  "interval": 1,
+  "format-wifi": "󰖩 ↓ {bandwidthDownBits} | ↑ {bandwidthUpBits}",
+  "format-ethernet": "󰈀 ↓ {bandwidthDownBits} | ↑ {bandwidthUpBits}",
+  "format-disconnected": "󰖪",
+  "tooltip-format": "{essid}\n{ipaddr}"
+  },
   "cava": {
     "framerate": 30,
     "autosens": 1,
@@ -155,6 +165,17 @@
       "critical": 90
     }
   },
+  "custom/gpu": {
+    "interval": 10,
+    "exec": "echo \" $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%\"",
+    "exec-alt": "echo \" $(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)°C\"",
+    "format": "{}"
+},
+"custom/gputemp": {
+    "interval": 10,
+    "exec": "echo \" $(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)°C\"",
+    "format": "{}"
+},
   "tray": {
     "spacing": 5,
     "icon-size": 20

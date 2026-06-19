@@ -4,6 +4,5 @@ area=$(slurp)
 # Take screenshot and save
 grim -g "$area" "$filename"
 
-# Copy to clipboard
-cat "$filename" | wl-copy
-
+# Copy image to clipboard
+wl-copy --type image/png < "$filename"
