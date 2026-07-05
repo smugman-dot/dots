@@ -12,7 +12,7 @@
     "custom/music"
   ],
   "modules-center": [
-    "niri/workspaces"
+    "ext/workspaces"
   ],
   "modules-right": [
     // "custom/notes",

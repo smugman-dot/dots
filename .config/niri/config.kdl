@@ -2,6 +2,7 @@
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
 // https://niri-wm.github.io/niri/Configuration:-Introduction
+include "colors.kdl"
 
 // Input device configuration.
 // Find the full list of options on the wiki:
@@ -10,7 +11,7 @@ input {
     keyboard {
         xkb {
             layout "us,ara"
-            options "grp:win_space_toggle,caps:escape,grp:super_space_toggle,compose:ralt"
+            options "grp:win_space_toggle,caps:escape,grp:super_space_toggle"
         }
         repeat-delay 100
         repeat-rate 50
@@ -27,11 +28,8 @@ input {
 
 output "DP-1" {
     mode "1920x1080@180.003"
-
     scale 1
-
     transform "normal"
-
     position x=0 y=0
 }
 xwayland-satellite {
@@ -45,32 +43,15 @@ layout {
         proportion 0.5
         proportion 0.66667
     }
-
-
     default-column-width { proportion 0.5; }
-    focus-ring {
-        width 1
-        active-color "#7fc8ff"
-        inactive-color "#505050"
-    }
-
-    border {
-        off
-
-        width 4
-        active-color "#ffc87f"
-        inactive-color "#505050"
-
-        urgent-color "#9b0000"
-
-    }
-
 }
 
 spawn-at-startup "waybar"
+spawn-sh-at-startup "gsr-ui launch-hide"
 spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-sh-at-startup "stash watch"
-spawn-sh-at-startup "swaybg -i /home/walid/wallpapers/abstract-swirls.jpg"
+spawn-sh-at-startup "wbg ~/Pictures/wallpapers/puffy-stars.jpg"
 hotkey-overlay {
     skip-at-startup
 }
@@ -95,7 +76,7 @@ window-rule {
     }
 }
 window-rule {
-    match app-id="steam_app_default"
+    match app-id="^steam_app"
     open-fullscreen true
 }
 
@@ -151,18 +132,25 @@ binds {
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
     // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    // XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
+    // XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    // XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-
+    XF86AudioRaiseVolume { spawn "~/scripts/osd_volume.sh" "--vol-up" "5"; }
+    XF86AudioLowerVolume { spawn "~/scripts/osd_volume.sh" "--vol-down" "5"; }
+    XF86AudioMute        { spawn "~/scripts/osd_volume.sh" "--vol-mute"; }
+    
     // Example media keys mapping using playerctl.
     // This will work with any MPRIS-enabled media player.
-    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    // XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    // XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    // XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    // XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
 
+    XF86AudioPlay { spawn "~/scripts/osd_media.sh" "--play-pause"; }
+    XF86AudioNext { spawn "~/scripts/osd_media.sh" "--next"; }
+    XF86AudioPrev { spawn "~/scripts/osd_media.sh" "--prev"; }
+    XF86AudioStop { spawn "~/scripts/osd_media.sh" "--stop"; }
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.

@@ -1,29 +1,130 @@
-font=AdwaitaSans-Regular 11
+# ==============================================================================
+# MAKO CONFIGURATION: MATUGEN TEMPLATE ARCHITECTURE
+# DESTINATION FOR FINAL: ~/.config/mako/config
+# PRE-PROCESSOR: Matugen 4.0+
+# ==============================================================================
+
+# ==============================================================================
+# 1. GLOBAL GEOMETRY & PLACEMENT
+# ==============================================================================
+# output=eDP-1
+layer=overlay
+anchor=bottom-left
+width=340
+height=150
+outer-margin=0,0,15,5
+margin=5
 padding=10
 border-size=1
-margin=10
-height=200
-border-radius=8
-max-icon-size=52
+border-radius=10
 
-background-color=#1e1e2e
-text-color=#cdd6f4
-border-color=#cba6f7
-progress-color=over #585b70
+# ==============================================================================
+# 2. TYPOGRAPHY & ICONS
+# ==============================================================================
+font=JetBrainsMono Nerd Font Mono 11
+markup=1
+format=<b>%s</b>\n%b
+icons=1
+max-icon-size=30
+icon-border-radius=8
+icon-path=/usr/share/icons/Papirus-Dark:/usr/share/icons/Papirus-Light:/usr/share/icons/Papirus:/usr/share/icons/breeze-dark:/usr/share/icons/breeze:/usr/share/icons/Adwaita:/usr/share/icons/AdwaitaLegacy:/usr/share/icons/hicolor
 
-default-timeout=50000
+# ==============================================================================
+# 3. TIMEOUTS, HISTORY, BEHAVIOR & ACTIONS
+# ==============================================================================
+default-timeout=5000
+ignore-timeout=0
+max-visible=6
+max-history=99
+history=1
+sort=-time
+actions=1
+on-button-left=invoke-default-action
+on-button-right=dismiss
 
+# ==============================================================================
+# 4. GLOBAL MATUGEN COLOR INJECTION (BASE THEME)
+# ==============================================================================
+# TUI NOTE: To hardcode a color, replace the matugen variable with a hex code.
+# NOTE ON MATUGEN SYNTAX: Material Design 3 roles MUST use snake_case!
+background-color=#19111480
+text-color=#efdfe2
+border-color=#9e8c91ff
+progress-color=#6f334bff
+
+# ==============================================================================
+# 5. STATE MODES (Cascading Overrides)
+# ==============================================================================
+[mode=do-not-disturb]
+invisible=1
+on-notify=none
+
+[mode=silent]
+on-notify=none
+
+# ==============================================================================
+# 6. URGENCY LEVELS
+# ==============================================================================
 [urgency=low]
-default-timeout=4000
+default-timeout=2000
+# OVERRIDES
+# background-color=#191114e6
+# text-color=#efdfe2
+# border-color=#514347
 
 [urgency=normal]
-default-timeout=6000
+default-timeout=3000
 
 [urgency=critical]
-default-timeout=0
-border-color=#fab387
-
-[mode=dnd]
+invisible=0
+default-timeout=3500
 ignore-timeout=1
-default-timeout=0
+on-notify=exec $HOME/user_scripts/waybar/safe_pkill.sh
+# OVERRIDES
+background-color=#93000ae6
+text-color=#ffdad6
+border-color=#ffb4ab
+
+# ==============================================================================
+# 7. APPLICATION OVERRIDES
+# ==============================================================================
+[app-name=Spotify]
 invisible=1
+
+[app-name=OSD]
+anchor=bottom-center
+layer=overlay
+width=242
+height=48
+outer-margin=0,0,0,0
+margin=0
+padding=0
+border-size=0
+border-radius=24
+icons=1
+text-alignment=center
+default-timeout=1000
+on-button-left=invoke-default-action
+# OVERRIDES
+background-color=#19111450
+text-color=#efdfe2ff
+border-color=#9e8c9133
+
+[app-name=matugen-theme]
+anchor=bottom-center
+layer=overlay
+width=160
+outer-margin=0,0,0,0
+margin=0,0,60,0
+padding=10
+border-size=0
+border-radius=20
+icons=0
+text-alignment=center
+format=<span font="monospace 16">%b</span>
+default-timeout=2500
+on-button-left=invoke-default-action
+# OVERRIDES
+background-color=#3c3235e6
+text-color=#efdfe2ff
+border-color=#9e8c91cc

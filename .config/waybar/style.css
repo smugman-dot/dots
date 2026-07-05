@@ -1,7 +1,8 @@
-@import "mocha.css";
-@define-color bg @base;
-@define-color fg @blue;
-@define-color fg2 @mauve;
+@import "colors.css";
+@define-color green #a6e3a1; /* no Material equivalent, hardcoded */
+@define-color bg @background;
+@define-color fg @primary;
+@define-color fg2 @tertiary;
 
 * {
   font-family: JetBrainsMonoNerd Font;
@@ -10,14 +11,14 @@
 }
 
 tooltip {
-  background: @mantle;
-  color: @text;
-  border: 1px solid @mauve;
+  background: @surface_container_low;
+  color: @on_background;
+  border: 1px solid @tertiary;
 }
 
 window#waybar {
   background: transparent;
-  color: @text;
+  color: @on_background;
   padding: 0px;
   border-radius: 50px;
 }
@@ -33,24 +34,24 @@ window#waybar {
   margin: 0px 1px;
   min-width: 18px;         /* force them narrow */
   border-radius: 15px;
-  color: @text;
+  color: @on_background;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #workspaces button.active {
-  color: @crust;
+  color: @shadow;
   padding: 0px 14px;       /* wide pill on active */
   font-weight: bold;
-  background: @lavender;
+  background: @primary;
   min-width: 55px;         /* big jump from 18px */
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #workspaces button.urgent {
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
   /* background: linear-gradient(45deg, @mauve, @sapphire); */
-  background: @red;
+  background: @error;
   /* min-width: 40px; */
   transition: all 0.3s;
 }
@@ -60,23 +61,23 @@ window#waybar {
   margin: 0px 1px;
   min-width: 18px;         /* force them narrow */
   border-radius: 15px;
-  color: @text;
+  color: @on_background;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #workspaces button.active {
-  color: @crust;
+  color: @shadow;
   padding: 0px 14px;       /* wide pill on active */
   font-weight: bold;
-  background: @lavender;
+  background: @primary;
   min-width: 55px;         /* big jump from 18px */
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #workspaces button:hover {
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
-  background: @lavender;
+  background: @primary;
   padding: 0px 8px;        /* mid-size on hover */
   min-width: 30px;
 }
@@ -119,30 +120,30 @@ window#waybar {
 #wireplumber,
 #custom-audio.muted {
   background: @bg;
-  color: @overlay2;
+  color: @on_surface_variant;
 }
 
 #memory.warning {
-  background: @maroon;
-  color: @crust;
+  background: @error_container;
+  color: @shadow;
   font-weight: bold;
 }
 
 #memory.critical {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 
 #cpu.warning {
-  background: @maroon;
-  color: @crust;
+  background: @error_container;
+  color: @shadow;
   font-weight: bold;
 }
 
 #cpu.critical {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 
@@ -151,28 +152,28 @@ window#waybar {
 }
 
 #battery.warning {
-  background: @maroon;
-  color: @crust;
+  background: @error_container;
+  color: @shadow;
   font-weight: bold;
 }
 #battery.critical {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 #battery.plugged,
 #battery.not-charging {
   background: @bg;
-  color: @teal;
+  color: @secondary;
 }
 #battery.charging {
   background: @green;
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
 }
 #battery.full {
   background: @green;
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
 }
 
@@ -180,7 +181,7 @@ window#waybar {
 #bluetooth.connected,
 #bluetooth.connected-battery {
   background: @fg;
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
 }
 
@@ -195,14 +196,14 @@ window#waybar {
   color: @fg;
 }
 #custom-notif.disabled {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 
 #custom-vuln {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
   padding-right: 12px;
   padding-left: 10px;
@@ -210,7 +211,7 @@ window#waybar {
 
 #custom-easyeffects.enabled {
   background: @fg;
-  color: @crust;
+  color: @shadow;
   font-weight: bold;
 }
 
@@ -237,8 +238,8 @@ window#waybar {
 }
 
 #temperature.critical {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 
@@ -248,48 +249,48 @@ window#waybar {
 
 @keyframes rgb {
   0% {
-    color: @flamingo;
+    color: @secondary_fixed;
   }
   8% {
-    color: @pink;
+    color: @primary_fixed;
   }
   16% {
-    color: @mauve;
+    color: @tertiary;
   }
   2% {
-    color: @teal;
+    color: @secondary;
   }
   32% {
-    color: @sky;
+    color: @tertiary_fixed;
   }
   40% {
-    color: @sapphire;
+    color: @secondary_fixed_dim;
   }
   48% {
     color: @fg;
   }
   56% {
-    color: @sapphire;
+    color: @secondary_fixed_dim;
   }
   64% {
-    color: @sky;
+    color: @tertiary_fixed;
   }
   72% {
-    color: @teal;
+    color: @secondary;
   }
   80% {
-    color: @mauve;
+    color: @tertiary;
   }
   88% {
-    color: @pink;
+    color: @primary_fixed;
   }
   100% {
-    color: @flamingo;
+    color: @secondary_fixed;
   }
 }
 #network.disconnected {
-  background: @red;
-  color: @crust;
+  background: @error;
+  color: @shadow;
   font-weight: bold;
 }
 #network {
@@ -298,9 +299,8 @@ window#waybar {
 @keyframes blinker {
   50% {
     /* opacity: 0.1; */
-    color: @crust;
+    color: @shadow;
     font-weight: bold;
-    background: @red;
+    background: @error;
   }
 }
-

@@ -1,0 +1,28 @@
+[language-server.vtsls]
+command = "vtsls"
+args = ["--stdio"]
+
+[language-server.pylsp]
+command = "pylsp"
+
+[language-server.pylsp.config.pylsp.plugins]
+pycodestyle.enabled = false
+pyflakes.enabled = false
+mccabe.enabled = false
+flake8.enabled = false
+
+[language-server.ruff]
+command = "ruff"
+args = ["server", "--preview"]
+
+[[language]]
+name = "typescript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+language-servers = [ "vtsls" ]  
+
+[[language]]
+name = "python"
+language-servers = [ "pylsp", "ruff" ]
+formatter = { command = "ruff", args = ["format", "-"] }
+auto-format = true

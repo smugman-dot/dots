@@ -1,139 +1,246 @@
-# ──────────────────────────────────────────────────────────────────
-# ZSH Configuration - Smooth & Minimal
-# ──────────────────────────────────────────────────────────────────
+# =============================================================================
+# ~/.zshrc - Zsh Configuration (Modular Architecture)
+#
+# Sections are ordered specifically to respect Zsh initialization sequences:
+# 1. Environment Variables & Path
+# 2. History Configuration
+# 3. Completion System (Must precede plugins)
+# 4. Keybindings & Shell Options
+# 5. Aliases & Core Functions
+# 6. External Modules (Modular Sourcing)
+# 7. Prompt & Tool Initialization
+# 8. Plugins (Syntax Highlighting MUST be last)
+# 9. TTY Auto-Login
+# =============================================================================
 
-if [[ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]]; then
-  source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-elif [[ -f ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]]; then
-  source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-fi
+# Exit early if not interactive (prevents breaking SCP/SFTP/rsync)
+[[ -o interactive ]] || return
 
-# Autosuggestions
-if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-elif [[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-  source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+# -----------------------------------------------------------------------------
+# [1] ENVIRONMENT VARIABLES & PATH
+# -----------------------------------------------------------------------------
+export TERMINAL='kitty'
+export EDITOR='helix'
+export VISUAL='helix'
+export PATH="$HOME/.cargo/bin:$PATH:$HOME/.local/bin"
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_STYLE_OVERRIDE=kvantum
 
-source <(fzf --zsh)
+# Compilation Optimization: Use ALL available processing units
+export MAKEFLAGS="-j$(nproc)"
 
-# History Configuration
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
+# Configure PATH (Uncomment to enable local binaries)
+# export PATH="$HOME/.local/bin:$PATH"
 
-# Directory Navigation
-setopt AUTO_CD
-setopt AUTO_PUSHD
-setopt PUSHD_IGNORE_DUPS
-setopt PUSHD_SILENT
+# -----------------------------------------------------------------------------
+# [2] HISTORY CONFIGURATION
+# -----------------------------------------------------------------------------
+HISTSIZE=50000
+SAVEHIST=25000
+HISTFILE="$HOME/.zsh_history"
 
-# Completion System
+setopt APPEND_HISTORY          # Append new history entries instead of overwriting.
+setopt INC_APPEND_HISTORY      # Write history to file immediately after command execution.
+setopt SHARE_HISTORY           # Share history between all concurrent shell sessions.
+setopt HIST_EXPIRE_DUPS_FIRST  # When trimming history, delete duplicates first.
+setopt HIST_IGNORE_DUPS        # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_SPACE       # Ignore commands starting with space.
+setopt HIST_VERIFY             # Expand history (!!) into the buffer, don't run immediately.
+
+# -----------------------------------------------------------------------------
+# [3] THE AUTOCOMPLETE ENGINE
+# -----------------------------------------------------------------------------
+setopt EXTENDED_GLOB # Enable extended globbing features (e.g., `^` for negation)
+
+# 1. zstyle configurations MUST be declared before compinit
+zstyle ':completion:*' menu select                 # Enable visual menu selection
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # Match LS_COLORS
+zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b' # Colored category headers
+zstyle ':completion:*' group-name ''               # Group completions by type
+# Fuzzy matching: Case-insensitive, partial-word, and substring completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+# Cache heavy completions (like pacman/yay) for instant loading
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+
+# 2. Optimized initialization: Only regenerate compdump cache once every 24 hours.
 autoload -Uz compinit
-compinit
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+local zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+local dump_cache=($zcompdump(#qN.mh-24)) # Array expansion forces glob evaluation without subshells
 
-# ──────────────────────────────────────────────────────────────────
-# Colors
-# ──────────────────────────────────────────────────────────────────
+if (( ${#dump_cache} )); then
+  compinit -C  # Trust the fresh cache, skip checks (Ultra Fast)
+else
+  compinit     # Cache is old or missing, regenerate it (Slow, happens once a day)
+  touch "$zcompdump"
+fi
 
-# Define color palette
-typeset -A colors
-colors=(
-  cyan     '%F{#49BDC7}'
-  blue     '%F{#298E82}'
-  magenta  '%F{#f5bde6}'
-  green    '%F{#a6da95}'
-  yellow   '%F{#eed49f}'
-  red      '%F{#ed8796}'
-  fg       '%F{#cad3f5}'
-  gray     '%F{#5b6078}'
-  reset    '%f'
-)
+# -----------------------------------------------------------------------------
+# [4] KEYBINDINGS & SHELL OPTIONS
+# -----------------------------------------------------------------------------
+# --- General Options ---
+setopt INTERACTIVE_COMMENTS # Allow comments (#) in an interactive shell.
+setopt GLOB_DOTS            # Include dotfiles (e.g., .config) in globbing results.
+setopt NO_CASE_GLOB         # Perform case-insensitive globbing.
+setopt AUTO_PUSHD           # Automatically push directories onto the directory stack.
+setopt PUSHD_IGNORE_DUPS    # Don't push duplicate directories onto the stack.
 
-# ──────────────────────────────────────────────────────────────────
-# Prompt
-# ──────────────────────────────────────────────────────────────────
+# --- Vi Mode Keybindings ---
+bindkey -v
+export KEYTIMEOUT=1 # 10ms transition delay (instant mode switching)
 
-setopt PROMPT_SUBST
+# --- Neovim Integration ---
+# Press 'v' in normal mode to edit the current command string in Neovim
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
-# Git branch function
-git_branch() {
-  local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
-  if [[ -n $branch ]]; then
-    echo " ${colors[magenta]}󰊢 $branch${colors[reset]}"
-  fi
+# --- History Search with Up/Down Arrows ---
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "${terminfo[kcuu1]:-^[[A}" history-beginning-search-backward-end
+bindkey "${terminfo[kcud1]:-^[[B}" history-beginning-search-forward-end
+
+# -----------------------------------------------------------------------------
+# [5] ALIASES & FUNCTIONS (Main Core)
+# -----------------------------------------------------------------------------
+# Core Safety
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -I'
+alias ln='ln -v'
+alias df='df -hT'
+alias nvim='helix'
+alias hx='helix'
+
+# Searching & Differencing
+alias diff='delta --side-by-side'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Eza Integration (Replaces standard ls)
+if command -v eza >/dev/null; then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza --icons --group-directories-first -l --git'
+    alias la='eza --icons --group-directories-first -la --git'
+    alias lt='eza --icons --group-directories-first --tree --level=2'
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -lh'
+    alias la='ls -A'
+fi
+
+# Yazi Wrapper (Changes directory upon exiting Yazi)
+function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
 }
 
-# Build prompt
-PROMPT='${colors[cyan]}╭─${colors[reset]} ${colors[blue]}%~${colors[reset]}$(git_branch)
-${colors[cyan]}╰─${colors[magenta]}❯${colors[reset]} '
+# Sudo Wrapper (Automatically routes 'sudo nvim' to 'sudoedit')
+sudo() {
+    case "$1" in
+        nvim|hx|helix)
+            shift
+            [[ $# -gt 0 ]] || {
+                echo "Error: sudoedit requires a filename."
+                return 1
+            }
+            EDITOR=hx command sudoedit "$@"
+            ;;
+        *)
+            command sudo "$@"
+            ;;
+    esac
+}
 
-
-RPROMPT='${colors[gray]}%D{%Y-%m-%d %H:%M:%S}${colors[reset]}'
-KEYTIMEOUT=1
-
-# ──────────────────────────────────────────────────────────────────
-# Aliases
-# ──────────────────────────────────────────────────────────────────
-
-# Navigation
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias nvim='helix'
-
-# List
-alias ls='eza -a -l --icons --color=auto'
-
-alias grep='grep -ai --color=auto'
-
-# ──────────────────────────────────────────────────────────────────
-# Functions
-# ──────────────────────────────────────────────────────────────────
-
-# Create directory and cd into it
+# Utility Function: Make directory and immediately CD into it
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
+# -----------------------------------------------------------------------------
+# [6] EXTERNAL MODULES (Modular Sourcing)
+# -----------------------------------------------------------------------------
+# Array-based sourcing loop. 
+# To add a new module, simply place the file in ~/.config/zshrc/ and add its name to this list.
+local conf_dir="$HOME/.config/zshrc"
+local -a my_modules=(
+    batstat git kvm lmstudio logs logs_old mon_info
+    pkg res_mon vfio waydroid win10 wthr cmd_atlas
+    sshfile scripts neovim_delta
+)
 
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	command yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+for mod in "${my_modules[@]}"; do
+    [[ -f "$conf_dir/$mod" ]] && source "$conf_dir/$mod"
+done
 
-# ──────────────────────────────────────────────────────────────────
-# Key Bindings
-# ──────────────────────────────────────────────────────────────────
+unset conf_dir my_modules mod
 
-bindkey -e  # Emacs mode
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
-bindkey "^R" history-incremental-search-backward
+# -----------------------------------------------------------------------------
+# [7] PROMPT & TOOL INITIALIZATION
+# -----------------------------------------------------------------------------
+# Self-Healing Caches: Checks if binaries were updated and regenerates config.
 
-bindkey -v  # vim mode
-# ──────────────────────────────────────────────────────────────────
-# Environment
-# ──────────────────────────────────────────────────────────────────
+# --- Starship Prompt ---
+_starship_cache="$HOME/.starship-init.zsh"
+_starship_bin="$(command -v starship)"
+if [[ -n "$_starship_bin" ]]; then
+  if [[ ! -f "$_starship_cache" || "$_starship_bin" -nt "$_starship_cache" ]]; then
+    "$_starship_bin" init zsh --print-full-init >! "$_starship_cache"
+  fi
+  source "$_starship_cache"
+fi
 
-export EDITOR='helix'
-export VISUAL='helix'
-export PAGER='less'
+# --- Fuzzy Finder (fzf) ---
+_fzf_cache="$HOME/.fzf-init.zsh"
+_fzf_bin="$(command -v fzf)"
+if [[ -n "$_fzf_bin" ]]; then
+  if "$_fzf_bin" --zsh >/dev/null 2>&1; then
+    if [[ ! -f "$_fzf_cache" || "$_fzf_bin" -nt "$_fzf_cache" ]]; then
+      "$_fzf_bin" --zsh >! "$_fzf_cache"
+    fi
+    source "$_fzf_cache"
+  elif [[ -f "$HOME/.fzf.zsh" ]]; then
+    source "$HOME/.fzf.zsh" # Fallback for older versions
+  fi
+fi
 
-export PATH=$PATH:/home/walid/.local/scripts:/home/walid/.local/bin:/opt/android-sdk/platform-tools/:/home/walid/.cargo/bin
-export LS_COLORS='di=1;38;2;73;189;199:fi=0;38;2;202;211;245:ln=0;38;2;245;189;230:ex=1;38;2;166;218;149'
+# --- Zoxide ---
+_zoxide_cache="$HOME/.zoxide-init.zsh"
+_zoxide_bin="$(command -v zoxide)"
+if [[ -n "$_zoxide_bin" ]]; then
+  if [[ ! -f "$_zoxide_cache" || "$_zoxide_bin" -nt "$_zoxide_cache" ]]; then
+    "$_zoxide_bin" init zsh >! "$_zoxide_cache"
+  fi
+  source "$_zoxide_cache"
+fi
 
-# ──────────────────────────────────────────────────────────────────
+# Cleanup
+unset _starship_cache _starship_bin _fzf_cache _fzf_bin _zoxide_cache _zoxide_bin
 
-fastfetch --config os
+# -----------------------------------------------------------------------------
+# [8] PLUGINS (Execution Order Critical)
+# -----------------------------------------------------------------------------
+# Autosuggestions MUST be sourced before Syntax Highlighting.
 
-export PATH=$PATH:/home/walid/.spicetify
+# --- Zsh Autosuggestions ---
+if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60' # Dimmed grey matching
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# --- Zsh Syntax Highlighting ---
+# This MUST be the absolute last thing sourced in the file.
+if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+# =============================================================================
+# End of ~/.zshrc
+# =============================================================================

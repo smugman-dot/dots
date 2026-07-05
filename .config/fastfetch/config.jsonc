@@ -1,161 +1,131 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
   "logo": {
-    "source": "/home/walid/.config/fastfetch/nixos.ans",
-    "type": "file",
+    "source": "arch",
     "padding": {
       "top": 1,
-      "left": 2
+      "left": 2,
+      "right": 4
+    },
+    "color": {
+      "1": "#ffb0cb",
+      "2": "#e2bdc7"
     }
   },
-  "modules": [
-    {
-      "type": "title",
+
+  "display": {
+    "separator": " │ ",
+    "color": {
+      "keys": "#e2bdc7",
+      "title": "#ffb0cb",
+      "separator": "#9e8c91"
+    },
+
+    "key": {
+      "width": 14
+    },
+
+    "bar": {
+      "width": 24,
+
+      "char": {
+        "elapsed": "█",
+        "total": "░"
+      },
+
+      "border": null,
+
       "color": {
-        "user": "cyan",
-        "at": "white",
-        "host": "blue"
+        "elapsed": "#ffb0cb",
+        "total": "#31282a"
       }
     },
-    {
-      "type": "separator",
-      "string": "─────────────────────────────────────"
-    },
-    {
-      "type": "datetime",
-      "key": "  Date",
-      "keyColor": "blue",
-      "format": "{1}-{3}-{11} {14}:{17}:{20}"
-    },
-    {
-      "type": "uptime",
-      "key": "  Uptime",
-      "keyColor": "blue"
-    },
-    {
-      "type": "separator",
-      "string": "─────────────────────────────────────"
-    },
+
+    "percent": {
+      "type": 2
+    }
+  },
+
+  "modules": [
+    "title",
+    "break",
+
     {
       "type": "os",
-      "key": "  OS",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "kernel",
-      "key": "  Kernel",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "packages",
-      "key": "  Packages",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "shell",
-      "key": "  Shell",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "display",
-      "key": " 󰍹 Display",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "de",
-      "key": "  DE",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "wm",
-      "key": "  WM",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "wmtheme",
-      "key": "  Theme",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "terminal",
-      "key": "  Terminal",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "separator",
-      "string": "─────────────────────────────────────"
+      "key": "󰣇 OS"
     },
     {
       "type": "host",
-      "key": " 󰌢 Host",
-      "keyColor": "magenta"
+      "key": "󰌢 Host"
     },
     {
+      "type": "kernel",
+      "key": " Kernel"
+    },
+    {
+      "type": "uptime",
+      "key": "󰅐 Uptime"
+    },
+
+    "break",
+
+    {
       "type": "cpu",
-      "key": " 󰻠 CPU",
-      "keyColor": "magenta"
+      "key": "󰍛 CPU"
     },
     {
       "type": "gpu",
-      "key": " 󰢮 GPU",
-      "keyColor": "magenta"
+      "key": "󰢮 GPU"
     },
     {
       "type": "memory",
-      "key": "  RAM",
-      "keyColor": "magenta"
+      "key": "󰘚 RAM"
     },
-    {
-      "type": "swap",
-      "key": "  Swap",
-      "keyColor": "magenta"
-    },
+
+    "break",
+
     {
       "type": "disk",
-      "key": " 󰋊 Disk (/)",
-      "keyColor": "magenta",
-      "folders": "/"
+      "key": "󰋊 Disk"
+    },
+
+    "break",
+
+    {
+      "type": "display",
+      "key": " Monitor"
     },
     {
-      "type": "disk",
-      "key": " 󰋊 Disk (/home)",
-      "keyColor": "magenta",
-      "folders": "/home"
+      "type": "wm",
+      "key": " WM"
     },
     {
-      "type": "disk",
-      "key": " 󰋊 Disk (/boot)",
-      "keyColor": "magenta",
-      "folders": "/boot"
+      "type": "terminal",
+      "key": " Terminal"
     },
     {
-      "type": "separator",
-      "string": "─────────────────────────────────────"
+      "type": "terminalfont",
+      "key": "󰛖 Font"
     },
+
+    "break",
+
     {
       "type": "localip",
-      "key": " 󰩠 Local IP",
-      "keyColor": "green",
-      "format": "{ipv4} ({ifname})"
+      "key": "󰩠 Local IP"
     },
     {
-      "type": "battery",
-      "key": " 󰁹 Battery",
-      "keyColor": "green"
+      "type": "shell",
+      "key": " Shell"
     },
     {
-      "type": "poweradapter",
-      "key": "  Power",
-      "keyColor": "green"
+      "type": "packages",
+      "key": "󰏖 Packages"
     },
-    {
-      "type": "separator",
-      "string": "─────────────────────────────────────"
-    },
-    {
-      "type": "colors",
-      "paddingLeft": 2,
-      "symbol": "circle"
-    }
+
+    "break",
+
+    "colors"
   ]
 }

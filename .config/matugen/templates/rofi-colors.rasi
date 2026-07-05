@@ -1,0 +1,166 @@
+/**
+ * Rofi Matugen Template — smooth, rounded, Material You
+ * Output this to ~/.config/rofi/config.rasi (or import it) via matugen.
+ *
+ * matugen config.toml entry:
+ * [templates.rofi]
+ * input_path = "~/.config/matugen/templates/rofi.rasi"
+ * output_path = "~/.config/rofi/colors.rasi"
+ *
+ * Then in your main rofi config.rasi: @import "colors.rasi"
+ */
+
+* {
+    bg0         : {{colors.surface.default.hex}}cc;
+    bg1         : {{colors.surface_container.default.hex}}cc;
+    bg2         : {{colors.surface_container_high.default.hex}}cc;
+    fg0         : {{colors.on_surface.default.hex}};
+    fg1         : {{colors.on_surface_variant.default.hex}};
+
+    accent      : {{colors.primary.default.hex}};
+    accent-fg   : {{colors.on_primary.default.hex}};
+    accent-cont : {{colors.primary_container.default.hex}};
+
+    urgent      : {{colors.error.default.hex}};
+    urgent-fg   : {{colors.on_error.default.hex}};
+
+    border-col  : {{colors.outline_variant.default.hex}};
+
+    background-color: transparent;
+    text-color:       @fg0;
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    transparency: "real";
+    location:     center;
+    anchor:       center;
+    width:        600px;
+    x-offset:     0px;
+    y-offset:     0px;
+
+    background-color: @bg0;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    24px;
+    padding:          16px;
+
+    /* smooth pop-in */
+    cursor:           "default";
+}
+
+mainbox {
+    background-color: transparent;
+    children:  [ inputbar, message, listview ];
+    spacing:   12px;
+    padding:   4px;
+}
+
+inputbar {
+    background-color: @bg1;
+    text-color:        @fg0;
+    border-radius:      18px;
+    padding:            10px 16px;
+    spacing:            10px;
+    children:           [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color:        @accent;
+    font:              "JetBrainsMono Nerd Font Bold 11";
+}
+
+entry {
+    background-color: transparent;
+    text-color:        @fg0;
+    placeholder:       "Search…";
+    placeholder-color: @fg1;
+    cursor:            text;
+}
+
+message {
+    background-color: @bg1;
+    border-radius:      14px;
+    padding:            8px 12px;
+}
+
+textbox {
+    text-color: @fg1;
+}
+
+listview {
+    background-color:  transparent;
+    columns:            1;
+    lines:              8;
+    spacing:             6px;
+    cycle:               true;
+    dynamic:             true;
+    layout:              vertical;
+    fixed-height:        false;
+    scrollbar:           false;
+}
+
+element {
+    background-color: transparent;
+    text-color:        @fg0;
+    orientation:        horizontal;
+    border-radius:      14px;
+    padding:            8px 12px;
+    spacing:            10px;
+
+    /* rofi doesn't do real CSS transitions, but border-radius + consistent
+       padding across states gives the illusion of a smooth morph between them */
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color:        @fg0;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color:        @fg0;
+}
+
+element selected.normal {
+    background-color: @accent-cont;
+    text-color:        @accent-fg;
+    border-radius:      14px;
+}
+
+element urgent.normal,
+element selected.urgent {
+    background-color: @urgent;
+    text-color:        @urgent-fg;
+}
+
+element-icon {
+    size:              26px;
+    padding:           0px 4px 0px 0px;
+    vertical-align:    0.5;
+    horizontal-align:  0.5;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color: inherit;
+}
+
+scrollbar {
+    handle-color:  @accent;
+    handle-width:  4px;
+    border-radius: 10px;
+}
+
+button {
+    background-color: @bg2;
+    text-color:        @fg1;
+    border-radius:      12px;
+    padding:            6px 10px;
+}
+
+button selected {
+    background-color: @accent;
+    text-color:        @accent-fg;
+}
