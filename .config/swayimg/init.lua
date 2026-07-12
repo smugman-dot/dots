@@ -23,7 +23,7 @@ swayimg.imagelist.enable_fsmon(true)
 -- Viewer defaults
 -- ============================================================================
 
-swayimg.viewer.set_default_scale("optimal")
+swayimg.viewer.set_default_scale("fill")
 swayimg.viewer.set_default_position("center")
 swayimg.viewer.enable_centering(true)
 swayimg.viewer.enable_loop(true)

@@ -31,7 +31,7 @@ while IFS= read -r line; do
 done <<< "$sinks"
 
 # Rofi menu
-selected="$(printf "%b" "$menu" | rofi -dmenu -i -p " audio out")"
+selected="$(printf "%b" "$menu" | fuzzel --dmenu -i -p " audio out")"
 [ -z "$selected" ] && exit 0
 
 sink_name="${sink_map[$selected]}"

@@ -98,3 +98,7 @@ output_path = "~/.config/mango/theme.conf"
 [templates.foot]
 input_path = "~/.config/matugen/templates/foot.ini"
 output_path = "~/.config/foot/foot.ini"
+
+[templates.prismlauncher]
+input_path = "~/.config/matugen/templates/prismlauncher.json"
+output_path = "~/.local/share/ElyPrismLauncher/themes/matugentheme.json"

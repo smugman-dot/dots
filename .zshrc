@@ -22,7 +22,7 @@
 export TERMINAL='kitty'
 export EDITOR='helix'
 export VISUAL='helix'
-export PATH="$HOME/.cargo/bin:$PATH:$HOME/.local/bin"
+export PATH="$HOME/.cargo/bin:$PATH:$HOME/.local/bin:/opt/thorium-browser"
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_STYLE_OVERRIDE=kvantum

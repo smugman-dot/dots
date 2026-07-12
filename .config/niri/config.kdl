@@ -60,7 +60,7 @@ blur {
     // off
     passes 3
     offset 3.0
-    noise 0.154
+    noise 0.05
     saturation 1.5
 }
 
@@ -72,14 +72,28 @@ window-rule {
     draw-border-with-background false
     background-effect {
         blur true
-        xray true
     }
 }
 window-rule {
     match app-id="^steam_app"
     open-fullscreen true
 }
-
+layer-rule {
+    match namespace="^launcher$"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+layer-rule {
+    match namespace="^notifications$"
+    geometry-corner-radius 26
+    background-effect {
+        blur true
+        xray false
+        noise 0.01
+    }
+}
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
@@ -87,15 +101,6 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
-}
-layer-rule {
-    match namespace="launcher"
-    geometry-corner-radius 12
-    background-effect {
-        blur true
-        xray true
-        noise 0.05
-    }
 }
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
