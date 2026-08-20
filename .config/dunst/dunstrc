@@ -15,3 +15,7 @@ foreground = "#cdd6f4"
 background = "#1e1e2e"
 foreground = "#cdd6f4"
 frame_color = "#fab387"
+
+[global]
+    width = 0
+    height = 0

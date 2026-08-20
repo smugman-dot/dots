@@ -102,3 +102,6 @@ function y() {
 }
 
 export PATH=$PATH:/home/walid/.spicetify
+
+# SLSsteam: Add wrapper to PATH
+export PATH="$HOME/.local/share/SLSsteam/path:$PATH"

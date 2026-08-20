@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export PATH="$HOME/.cargo/bin/:$PATH"
 
 selection="$(stash list | rofi \
     -dmenu \

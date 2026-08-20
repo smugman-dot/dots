@@ -22,10 +22,11 @@
 export TERMINAL='kitty'
 export EDITOR='helix'
 export VISUAL='helix'
-export PATH="$HOME/.cargo/bin:$PATH:$HOME/.local/bin:/opt/thorium-browser"
+export PATH="$HOME/.cargo/bin:$PATH"
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_STYLE_OVERRIDE=kvantum
+export LIBVA_DRIVER_NAME=nvidia
 
 # Compilation Optimization: Use ALL available processing units
 export MAKEFLAGS="-j$(nproc)"
@@ -244,3 +245,8 @@ fi
 # =============================================================================
 # End of ~/.zshrc
 # =============================================================================
+
+export PATH=$PATH:/home/walid/.spicetify
+
+# SLSsteam: Add wrapper to PATH
+export PATH="$HOME/.local/share/SLSsteam/path:$PATH"

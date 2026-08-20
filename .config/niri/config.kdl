@@ -29,6 +29,7 @@ input {
 output "DP-1" {
     mode "1920x1080@180.003"
     scale 1
+    variable-refresh-rate
     transform "normal"
     position x=0 y=0
 }
@@ -51,7 +52,8 @@ spawn-sh-at-startup "gsr-ui launch-hide"
 spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-sh-at-startup "stash watch"
-spawn-sh-at-startup "wbg ~/Pictures/wallpapers/puffy-stars.jpg"
+spawn-sh-at-startup "wbg ~/Pictures/wallpapers/wallhaven-e86ewr.png"
+
 hotkey-overlay {
     skip-at-startup
 }
@@ -77,6 +79,7 @@ window-rule {
 window-rule {
     match app-id="^steam_app"
     open-fullscreen true
+    open-focused true
 }
 layer-rule {
     match namespace="^launcher$"
@@ -128,6 +131,7 @@ binds {
     Mod+Shift+Q {spawn-sh "/home/walid/scripts/powermenu.sh";}
     Mod+S {spawn-sh "/home/walid/scripts/grimshotcpsv.sh";}
     Mod+Shift+S {spawn-sh "/home/walid/scripts/grimshotfullcpsv.sh";}
+    Mod+B {spawn-sh "killall -SIGUSR1 waybar";}
 
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
@@ -266,6 +270,7 @@ binds {
     Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
     Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
+
     // Similarly, you can bind touchpad scroll "ticks".
     // Touchpad scrolling is continuous, so for these binds it is split into
     // discrete intervals.
@@ -393,3 +398,6 @@ binds {
     Ctrl+Alt+Delete { quit; }
 }
 
+
+// Tide Island shortcut bindings
+include "/home/walid/.config/tide-island/niri-shortcuts.kdl"

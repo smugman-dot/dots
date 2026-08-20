@@ -9,17 +9,17 @@
       "right": 4
     },
     "color": {
-      "1": "#ffb0cb",
-      "2": "#e2bdc7"
+      "1": "#bdc2ff",
+      "2": "#c4c4dd"
     }
   },
 
   "display": {
     "separator": " │ ",
     "color": {
-      "keys": "#e2bdc7",
-      "title": "#ffb0cb",
-      "separator": "#9e8c91"
+      "keys": "#c4c4dd",
+      "title": "#bdc2ff",
+      "separator": "#91909a"
     },
 
     "key": {
@@ -37,8 +37,8 @@
       "border": null,
 
       "color": {
-        "elapsed": "#ffb0cb",
-        "total": "#31282a"
+        "elapsed": "#bdc2ff",
+        "total": "#29292f"
       }
     },
 

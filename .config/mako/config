@@ -47,10 +47,10 @@ on-button-right=dismiss
 # ==============================================================================
 # TUI NOTE: To hardcode a color, replace the matugen variable with a hex code.
 # NOTE ON MATUGEN SYNTAX: Material Design 3 roles MUST use snake_case!
-background-color=#19111480
-text-color=#efdfe2
-border-color=#9e8c91ff
-progress-color=#6f334bff
+background-color=#13131880
+text-color=#e4e1e9
+border-color=#91909aff
+progress-color=#3c4279ff
 
 # ==============================================================================
 # 5. STATE MODES (Cascading Overrides)
@@ -68,9 +68,9 @@ on-notify=none
 [urgency=low]
 default-timeout=2000
 # OVERRIDES
-# background-color=#191114e6
-# text-color=#efdfe2
-# border-color=#514347
+# background-color=#131318e6
+# text-color=#e4e1e9
+# border-color=#46464f
 
 [urgency=normal]
 default-timeout=3000
@@ -106,9 +106,9 @@ text-alignment=center
 default-timeout=1000
 on-button-left=invoke-default-action
 # OVERRIDES
-background-color=#19111450
-text-color=#efdfe2ff
-border-color=#9e8c9133
+background-color=#13131850
+text-color=#e4e1e9ff
+border-color=#91909a33
 
 [app-name=matugen-theme]
 anchor=bottom-center
@@ -125,6 +125,6 @@ format=<span font="monospace 16">%b</span>
 default-timeout=2500
 on-button-left=invoke-default-action
 # OVERRIDES
-background-color=#3c3235e6
-text-color=#efdfe2ff
-border-color=#9e8c91cc
+background-color=#34343ae6
+text-color=#e4e1e9ff
+border-color=#91909acc
