@@ -4,7 +4,6 @@
   "height": 0,
   "spacing": 7,
   "modules-left": [
-    "clock#1",
     "clock#2",
     "clock#3",
     "temperature",
@@ -17,8 +16,8 @@
   "modules-right": [
     // "custom/notes",
     // "custom/cal",
-    "custom/recorder",
     "network",
+    "custom/gamesir",
     "custom/wakapi",
     "memory",
     "custom/gpu",
@@ -26,23 +25,32 @@
     "custom/audio",
     "tray"
   ],
+  "custom/gamesir": {
+    "exec": "~/.local/bin/gamesir-battery --watch --notify",
+    "return-type": "json",
+    "tooltip": true
+  },
   "clock#1": {
     "format": "{:%a}",
     "tooltip": false
   },
   "clock#2": {
-    "format": "{:%d-%m %b}",
-    "tooltip-format": "{calendar}",
-    "calendar": {
-      "mode-mon-col": 3,
-      "on-scroll": 1,
-      "format": {
-        "months": "<span color='#89b4fa'><b>{}</b></span>",
-        "days": "<span color='#f5c2e7'><b>{}</b></span>",
-        "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-        "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
-      }
-    },
+  "format": "󰃭  {:%a %d %b}",
+  "format-alt": "󰃭  {:%A, %d %B %Y}",
+  "tooltip-format": "<big>{:%B %Y}</big>\n<tt>{calendar}</tt>",
+  "calendar": {
+    "mode": "year",
+    "mode-mon-col": 3,
+    "weeks-pos": "right",
+    "on-scroll": 1,
+    "format": {
+      "months":   "<span color='#89b4fa'><b>{}</b></span>",
+      "days":     "<span color='#cdd6f4'>{}</span>",
+      "weeks":    "<span color='#94e2d5'><small>W{}</small></span>",
+      "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+      "today":    "<span color='#f38ba8'><b><u>{}</u></b></span>"
+    }
+  },
     "actions": {
       "on-click-right": "mode",
       "on-scroll-up": "shift_up",

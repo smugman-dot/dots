@@ -29,7 +29,7 @@ default_floating_border none
 #
 # Example configuration:
 #
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+output DP-1 resolution 1920x1080@180.003Hz adaptive_sync on allow_tearing yes max_render_time 1
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 

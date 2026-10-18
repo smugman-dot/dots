@@ -22,7 +22,7 @@
 export TERMINAL='kitty'
 export EDITOR='helix'
 export VISUAL='helix'
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_STYLE_OVERRIDE=kvantum

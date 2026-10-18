@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+"""
+GameSir controller battery reader (Linux, via /dev/hidraw*).
+
+Reverse-engineered from a USB capture of GameSir Connect (Windows):
+- The controller exposes a hidden vendor HID interface (separate from the
+  normal XInput gamepad interface).
+- Sending a 64-byte "get info" report makes the device reply with a 64-byte
+  report whose byte[18] is the battery percentage (0-100). A value of
+  0xFF (255) means "fully charged" and is shown as 100.
+- NOTE: do NOT send the "handshake" report (f3 01 05 02 fb ...). It triggers
+  a USB mode-switch on this controller and disconnects it.
+
+VID/PID: 0x3537 / 0x1098 (GameSir, in its "XBOX 360 For Windows" mode).
+
+Usage:
+  gamesir_battery.py                 print "Battery: NN%" once
+  gamesir_battery.py --waybar        print one JSON line (Waybar, with "interval")
+  gamesir_battery.py --watch         long-running; prints a JSON line on every
+                                     update (Waybar, WITHOUT "interval")
+  gamesir_battery.py --watch --notify   same, plus desktop notifications on
+                                        connect / disconnect / low battery
+  add --debug to --watch to log what it sees to stderr
+"""
+
+import glob
+import json
+import os
+import shutil
+import subprocess
+import sys
+import time
+
+VID = 0x3537
+PID = 0x1098
+
+GET_INFO = bytes.fromhex("0101" + "00" * 62)
+
+ICON = ""  # nf-fa-gamepad (needs a Nerd Font)
+
+TICK = 1                # seconds between presence checks
+FULLSCREEN_RECHECK = 5  # seconds between fullscreen lookups while paused
+CONNECTED_POLL = 60    # seconds between battery reads while connected
+DISCONNECTED_POLL = 3   # seconds between reads when a node exists but is silent
+FAILS_BEFORE_DISCONNECT = 2   # avoid flicker from a single missed reply
+LOW_BATTERY = 20        # notify once when dropping to/below this
+CACHE = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "gamesir_battery.json")
+
+
+# --------------------------------------------------------------------------
+# Device access
+# --------------------------------------------------------------------------
+
+def find_candidate_hidraw_paths():
+    """Return /dev/hidraw* paths whose VID:PID match the controller."""
+    matches = []
+    for uevent_path in glob.glob("/sys/class/hidraw/hidraw*/device/uevent"):
+        try:
+            with open(uevent_path) as f:
+                content = f.read()
+        except OSError:
+            continue
+        # Line looks like: HID_ID=0003:00003537:00001098
+        for line in content.splitlines():
+            if line.startswith("HID_ID="):
+                parts = line.split(":")
+                if len(parts) == 3:
+                    try:
+                        vid = int(parts[1], 16)
+                        pid = int(parts[2], 16)
+                    except ValueError:
+                        continue
+                    if vid == VID and pid == PID:
+                        hidraw_name = uevent_path.split("/")[4]  # hidrawN
+                        matches.append(f"/dev/{hidraw_name}")
+    return sorted(matches)
+
+
+def try_read_battery(path, timeout=1.0, verbose=False):
+    """Send the info query on one hidraw node. Returns battery % or None."""
+    try:
+        fd = os.open(path, os.O_RDWR | os.O_NONBLOCK)
+    except OSError as e:
+        if verbose:
+            print(f"  [skip] {path}: cannot open ({e})", file=sys.stderr)
+        return None
+
+    try:
+        # Drain anything pending
+        try:
+            while os.read(fd, 64):
+                pass
+        except BlockingIOError:
+            pass
+        except OSError:
+            return None
+
+        try:
+            os.write(fd, GET_INFO)
+        except OSError:
+            return None
+
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            try:
+                data = os.read(fd, 64)
+            except BlockingIOError:
+                time.sleep(0.02)
+                continue
+            except OSError:
+                return None
+            if data and data[0] == 0x01 and len(data) >= 19:
+                raw = data[18]
+                return 100 if raw == 0xFF else min(raw, 100)
+        return None
+    finally:
+        os.close(fd)
+
+
+def read_battery(verbose=False):
+    for path in find_candidate_hidraw_paths():
+        pct = try_read_battery(path, verbose=verbose)
+        if pct is not None:
+            return pct
+    return None
+
+
+# --------------------------------------------------------------------------
+# Environment helpers
+# --------------------------------------------------------------------------
+
+def gaming_active():
+    """True if the focused Hyprland window looks like a game.
+
+    Matches either real fullscreen, or the xdg tag Steam/Proton puts on game
+    windows (e.g. "proton-game"), which also catches floating/borderless games.
+    A false positive only means we skip a poll, so this errs on the safe side.
+    """
+    try:
+        res = subprocess.run(
+            ["hyprctl", "activewindow", "-j"],
+            capture_output=True, text=True, timeout=1,
+        )
+        win = json.loads(res.stdout or "{}")
+    except (OSError, subprocess.SubprocessError, ValueError):
+        return False
+    if not isinstance(win, dict):
+        return False
+    fs = win.get("fullscreen", 0)
+    # Newer Hyprland: 0 none, 1 maximized, 2 fullscreen, 3 both. Older: bool.
+    if fs is True or fs in (2, 3):
+        return True
+    return "game" in str(win.get("xdgTag") or "").lower()
+
+
+def load_cache():
+    try:
+        with open(CACHE) as f:
+            return json.load(f).get("pct")
+    except (OSError, ValueError):
+        return None
+
+
+def save_cache(pct):
+    try:
+        with open(CACHE, "w") as f:
+            json.dump({"pct": pct}, f)
+    except OSError:
+        pass
+
+
+def notify(title, body, urgency="normal"):
+    if shutil.which("notify-send"):
+        subprocess.run(
+            ["notify-send", "-a", "GameSir", "-u", urgency, "-i", "input-gaming", title, body],
+            check=False,
+        )
+
+
+# --------------------------------------------------------------------------
+# Output
+# --------------------------------------------------------------------------
+
+def css_class(pct):
+    if pct is None:
+        return "disconnected"
+    if pct <= 15:
+        return "critical"
+    if pct <= 30:
+        return "low"
+    return "normal"
+
+
+def make_output(pct, note=""):
+    if pct is None:
+        # Empty text makes Waybar hide the module while the controller is off.
+        return {"text": "", "tooltip": note or "GameSir controller not found", "class": "disconnected"}
+    tip = f"GameSir controller: {pct}%"
+    if note:
+        tip += f" ({note})"
+    return {
+        "text": f"{ICON} {pct}%",
+        "tooltip": tip,
+        "class": css_class(pct),
+        "percentage": pct,
+    }
+
+
+def emit(out):
+    print(json.dumps(out), flush=True)
+
+
+# --------------------------------------------------------------------------
+# Modes
+# --------------------------------------------------------------------------
+
+def waybar_once():
+    """Single-shot mode for Waybar's "interval" style."""
+    if gaming_active():
+        pct = load_cache()
+        emit(make_output(pct, "last reading, paused while gaming") if pct is not None
+             else make_output(None, "Paused while gaming"))
+        return
+    pct = read_battery()
+    if pct is not None:
+        save_cache(pct)
+    emit(make_output(pct))
+
+
+class Watcher:
+    """State machine: tracks connected/disconnected and decides what to emit.
+
+    Two signals:
+    - presence: do the controller's hidraw nodes exist? Pure sysfs lookup, no
+      I/O to the device, so it's cheap enough to check every second, even
+      during fullscreen. Disappearing nodes = definite disconnect.
+    - reads: actual battery queries, rate-limited, never during fullscreen.
+    """
+
+    def __init__(self, notifications=False, debug=False):
+        self.notifications = notifications
+        self.debug = debug
+        self.connected = False
+        self.pct = None
+        self.fails = 0
+        self.low_notified = False
+        self.next_read = 0.0
+        self.paused = False
+
+    def _notify(self, *args, **kw):
+        if self.notifications:
+            notify(*args, **kw)
+
+    def _log(self, msg):
+        if self.debug:
+            print(f"[debug] {msg}", file=sys.stderr, flush=True)
+
+    def _idle_output(self):
+        if self.paused:
+            if self.connected:
+                return make_output(self.pct, "last reading, paused while gaming")
+            return make_output(None, "Paused while gaming")
+        return make_output(self.pct) if self.connected else make_output(None)
+
+    def _disconnect(self, why):
+        self._log(f"disconnect: {why}")
+        self.connected = False
+        self.pct = None
+        self.fails = 0
+        self.next_read = 0.0
+        self._notify("Controller disconnected", "GameSir controller went away")
+
+    def step(self, fullscreen, now=None, reader=read_battery, present=None):
+        """One tick (call about once a second). Returns the JSON dict to show."""
+        now = time.monotonic() if now is None else now
+        if present is None:
+            present = bool(find_candidate_hidraw_paths())
+
+        if not present:
+            if self.connected:
+                self._disconnect("hidraw node vanished")
+            return make_output(None)
+
+        if now < self.next_read:
+            return self._idle_output()
+
+        # A read is due. Only now pay for the fullscreen lookup (a subprocess),
+        # so the per-second tick stays a bare sysfs check. If fullscreen, don't
+        # talk to the controller at all and look again shortly.
+        self.paused = fullscreen() if callable(fullscreen) else bool(fullscreen)
+        if self.paused:
+            self.next_read = now + FULLSCREEN_RECHECK
+            return self._idle_output()
+
+        pct = reader()
+        self._log(f"read -> {pct}")
+
+        if pct is not None:
+            self.fails = 0
+            self.next_read = now + CONNECTED_POLL
+            if not self.connected:
+                self.connected = True
+                self._notify("Controller connected", f"GameSir battery: {pct}%")
+            self.pct = pct
+            save_cache(pct)
+            if pct <= LOW_BATTERY and not self.low_notified:
+                self.low_notified = True
+                self._notify("Controller battery low", f"GameSir at {pct}%", "critical")
+            elif pct > LOW_BATTERY + 5:
+                self.low_notified = False  # re-arm after it has been charged
+            return make_output(pct)
+
+        # Node exists but no reply
+        self.next_read = now + DISCONNECTED_POLL
+        if self.connected:
+            self.fails += 1
+            if self.fails >= FAILS_BEFORE_DISCONNECT:
+                self._disconnect("no reply to battery query")
+                return make_output(None)
+            return make_output(self.pct)  # probably a hiccup
+        return make_output(None)
+
+
+def watch(notifications, debug=False):
+    w = Watcher(notifications, debug)
+    last = None
+    try:
+        while True:
+            out = w.step(gaming_active)  # passed as a callable: looked up lazily
+            if out != last:  # only emit when something changed
+                emit(out)
+                last = out
+            time.sleep(TICK)
+    except (BrokenPipeError, KeyboardInterrupt):
+        # Waybar went away / was reloaded.
+        sys.exit(0)
+
+
+def main():
+    args = sys.argv[1:]
+    if "--watch" in args:
+        watch("--notify" in args, "--debug" in args)
+        return
+    if "--waybar" in args:
+        waybar_once()
+        return
+
+    candidates = find_candidate_hidraw_paths()
+    if not candidates:
+        print("No matching GameSir hidraw device found (VID 0x3537 / PID 0x1098).")
+        sys.exit(1)
+
+    print(f"Found {len(candidates)} candidate device(s): {candidates}")
+    pct = read_battery(verbose=True)
+    if pct is None:
+        print("Couldn't get a battery reading (check permissions / udev rule).")
+        sys.exit(1)
+    print(f"Battery: {pct}%")
+
+
+if __name__ == "__main__":
+    main()

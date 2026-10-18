@@ -11,20 +11,20 @@
  */
 
 * {
-    bg0         : #131318cc;
-    bg1         : #1f1f25cc;
-    bg2         : #29292fcc;
-    fg0         : #e4e1e9;
-    fg1         : #c7c5d0;
+    bg0         : #101418cc;
+    bg1         : #1c2024cc;
+    bg2         : #272a2fcc;
+    fg0         : #e0e2e8;
+    fg1         : #c2c7cf;
 
-    accent      : #bdc2ff;
-    accent-fg   : #252b61;
-    accent-cont : #3c4279;
+    accent      : #9ccbfb;
+    accent-fg   : #003354;
+    accent-cont : #124a73;
 
     urgent      : #ffb4ab;
     urgent-fg   : #690005;
 
-    border-col  : #46464f;
+    border-col  : #42474e;
 
     background-color: transparent;
     text-color:       @fg0;

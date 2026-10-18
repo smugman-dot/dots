@@ -29,6 +29,7 @@ return {
 			"rafamadriz/friendly-snippets",
 		},
 	},
+	{'https://github.com/RRethy/base16-nvim.git'},
 	{
 		"nickjvandyke/opencode.nvim",
 		version = "*", -- Latest stable release

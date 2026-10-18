@@ -1,2 +1,4 @@
-theme="colors"
+theme="catppuccin_macchiato"
+[editor]
+cursorline = true
 

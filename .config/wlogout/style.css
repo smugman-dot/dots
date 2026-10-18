@@ -1,0 +1,80 @@
+* {
+    background-image: none;
+    box-shadow: none;
+    /* Material You Expressive Easing curve */
+    transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+}
+
+window {
+    background-color: rgba(30, 30, 46, 0.65); /* Catppuccin Mocha Base */
+}
+
+/* Base Card State (Material You Rounded Square Containers) */
+button {
+    border-radius: 48px; /* Material You Container Shape */
+    color: #cdd6f4;
+    background-color: #313244; /* Surface0 */
+    border: 2px solid transparent;
+    margin: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    
+    /* Center text and icon position */
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: 32%;
+}
+
+button:focus,
+button:active,
+button:hover {
+    outline: none;
+    box-shadow: none;
+}
+
+/* 
+ * Material You Interactive States
+ * Morphing from Rounded Rect -> Squircle / Pill shape on Hover or Arrow Focus
+ */
+button:hover,
+button:focus {
+    border-radius: 100px; /* Morphs container into a pill/squircle */
+    background-position: center 22%; /* Moves icon up inside the card */
+}
+
+/* Shutdown: Catppuccin Red Glow & Morph */
+#shutdown:hover, 
+#shutdown:focus {
+    background-color: #f38ba8;
+    color: #11111b;
+    background-image: image(url("/home/walid/.config/wlogout/icons/shutdown_black.png"));
+}
+
+/* Reboot: Catppuccin Peach Glow & Morph */
+#reboot:hover, 
+#reboot:focus {
+    background-color: #fab387;
+    color: #11111b;
+    background-image: image(url("/home/walid/.config/wlogout/icons/reboot_black.png"));
+}
+
+/* Logout: Catppuccin Blue Glow & Morph */
+#logout:hover, 
+#logout:focus {
+    background-color: #89b4fa;
+    color: #11111b;
+    background-image: image(url("/home/walid/.config/wlogout/icons/logout_black.png"));
+}
+
+/* Default White Icons */
+#shutdown {
+    background-image: image(url("/home/walid/.config/wlogout/icons/shutdown_white.png"));
+}
+
+#reboot {
+    background-image: image(url("/home/walid/.config/wlogout/icons/reboot_white.png"));
+}
+
+#logout {
+    background-image: image(url("/home/walid/.config/wlogout/icons/logout_white.png"));
+}
