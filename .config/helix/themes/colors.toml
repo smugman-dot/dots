@@ -2,127 +2,127 @@
 
 # --- Syntax Elements ---
 
-"attribute" = "#9ccbfb"
-"type" = "#b9c8da"
-"type.enum.variant" = "#b9c8da"
-"constructor" = "#cfe5ff"
+"attribute" = "#ffb3b1"
+"type" = "#e6bdbb"
+"type.enum.variant" = "#e6bdbb"
+"constructor" = "#ffdad8"
 
-"constant" = "#d4bee6"
-"constant.character" = "#d4bee6"
-"constant.character.escape" = "#504060"
+"constant" = "#e4c18d"
+"constant.character" = "#e4c18d"
+"constant.character.escape" = "#5a4319"
 
-"string" = "#9ccbfb"
-"string.regexp" = "#504060"
-"string.special" = "#cfe5ff"
+"string" = "#ffb3b1"
+"string.regexp" = "#5a4319"
+"string.special" = "#ffdad8"
 "string.special.symbol" = "#ffb4ab"
 
-"comment" = { fg = "#c2c7cf", modifiers = ["italic"] }
+"comment" = { fg = "#d7c1c0", modifiers = ["italic"] }
 
-"variable" = "#e0e2e8"
+"variable" = "#f0dedd"
 "variable.parameter" = { fg = "#93000a", modifiers = ["italic"] }
 "variable.builtin" = "#ffb4ab"
-"variable.other.member" = "#9ccbfb"
+"variable.other.member" = "#ffb3b1"
 
-"label" = "#cfe5ff"
+"label" = "#ffdad8"
 
-"punctuation" = "#c2c7cf"
-"punctuation.special" = "#b9c8da"
+"punctuation" = "#d7c1c0"
+"punctuation.special" = "#e6bdbb"
 
-"keyword" = "#9ccbfb"
-"keyword.control.conditional" = { fg = "#9ccbfb", modifiers = ["italic"] }
+"keyword" = "#ffb3b1"
+"keyword.control.conditional" = { fg = "#ffb3b1", modifiers = ["italic"] }
 
-"operator" = "#b9c8da"
+"operator" = "#e6bdbb"
 
-"function" = "#9ccbfb"
-"function.macro" = "#124a73"
+"function" = "#ffb3b1"
+"function.macro" = "#733334"
 
-"tag" = "#9ccbfb"
-"namespace" = { fg = "#b9c8da", modifiers = ["italic"] }
+"tag" = "#ffb3b1"
+"namespace" = { fg = "#e6bdbb", modifiers = ["italic"] }
 
-"special" = "#9ccbfb"
+"special" = "#ffb3b1"
 
 # --- Markup ---
 
 "markup.heading.1" = "#ffb4ab"
-"markup.heading.2" = "#9ccbfb"
-"markup.heading.3" = "#b9c8da"
-"markup.heading.4" = "#d4bee6"
-"markup.heading.5" = "#cfe5ff"
-"markup.heading.6" = "#124a73"
+"markup.heading.2" = "#ffb3b1"
+"markup.heading.3" = "#e6bdbb"
+"markup.heading.4" = "#e4c18d"
+"markup.heading.5" = "#ffdad8"
+"markup.heading.6" = "#733334"
 
-"markup.list" = "#b9c8da"
-"markup.list.unchecked" = "#c2c7cf"
-"markup.list.checked" = "#cfe5ff"
+"markup.list" = "#e6bdbb"
+"markup.list.unchecked" = "#d7c1c0"
+"markup.list.checked" = "#ffdad8"
 
-"markup.bold" = { fg = "#9ccbfb", modifiers = ["bold"] }
-"markup.italic" = { fg = "#b9c8da", modifiers = ["italic"] }
+"markup.bold" = { fg = "#ffb3b1", modifiers = ["bold"] }
+"markup.italic" = { fg = "#e6bdbb", modifiers = ["italic"] }
 
-"markup.link.url" = { fg = "#9ccbfb", modifiers = ["italic", "underlined"] }
-"markup.link.text" = "#cfe5ff"
-"markup.link.label" = "#d4bee6"
-"markup.raw" = "#f0dbff"
-"markup.quote" = "#504060"
+"markup.link.url" = { fg = "#ffb3b1", modifiers = ["italic", "underlined"] }
+"markup.link.text" = "#ffdad8"
+"markup.link.label" = "#e4c18d"
+"markup.raw" = "#ffdeac"
+"markup.quote" = "#5a4319"
 
 # --- Diff ---
 
-"diff.plus" = "#d4bee6"
+"diff.plus" = "#e4c18d"
 "diff.minus" = "#ffb4ab"
-"diff.delta" = "#9ccbfb"
+"diff.delta" = "#ffb3b1"
 
 # --- UI Elements ---
 
-"ui.background" = { fg = "#e0e2e8" }
+"ui.background" = { fg = "#f0dedd" }
 
-"ui.linenr" = { fg = "#c2c7cf" }
-"ui.linenr.selected" = { fg = "#cfe5ff" }
+"ui.linenr" = { fg = "#d7c1c0" }
+"ui.linenr.selected" = { fg = "#ffdad8" }
 
-"ui.statusline" = { fg = "#cfe5ff" }
-"ui.statusline.inactive" = { fg = "#c2c7cf" }
-"ui.statusline.normal" = { fg = "#101418", modifiers = ["bold"] }
-"ui.statusline.insert" = { fg = "#101418", modifiers = ["bold"] }
-"ui.statusline.select" = { fg = "#101418", modifiers = ["bold"] }
+"ui.statusline" = { fg = "#ffdad8" }
+"ui.statusline.inactive" = { fg = "#d7c1c0" }
+"ui.statusline.normal" = { fg = "#1a1111", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "#1a1111", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "#1a1111", modifiers = ["bold"] }
 
-"ui.popup" = { fg = "#e0e2e8" }
-"ui.window" = { fg = "#c2c7cf" }
-"ui.help" = { fg = "#c2c7cf" }
+"ui.popup" = { fg = "#f0dedd" }
+"ui.window" = { fg = "#d7c1c0" }
+"ui.help" = { fg = "#d7c1c0" }
 
-"ui.bufferline" = { fg = "#c2c7cf" }
-"ui.bufferline.active" = { fg = "#003354", bg = "#9ccbfb", underline = { color = "#9ccbfb", style = "line" } }
+"ui.bufferline" = { fg = "#d7c1c0" }
+"ui.bufferline.active" = { fg = "#571d1f", bg = "#ffb3b1", underline = { color = "#ffb3b1", style = "line" } }
 "ui.bufferline.background" = {}
 
-"ui.text" = "#e0e2e8"
-"ui.text.focus" = { fg = "#9ccbfb", modifiers = ["bold"] }
-"ui.text.inactive" = { fg = "#c2c7cf" }
-"ui.text.directory" = { fg = "#9ccbfb" }
+"ui.text" = "#f0dedd"
+"ui.text.focus" = { fg = "#ffb3b1", modifiers = ["bold"] }
+"ui.text.inactive" = { fg = "#d7c1c0" }
+"ui.text.directory" = { fg = "#ffb3b1" }
 
-"ui.virtual" = "#c2c7cf"
+"ui.virtual" = "#d7c1c0"
 "ui.virtual.ruler" = {}
-"ui.virtual.indent-guide" = "#181c20"
-"ui.virtual.inlay-hint" = { fg = "#c2c7cf" }
-"ui.virtual.jump-label" = { fg = "#124a73", modifiers = ["bold"] }
+"ui.virtual.indent-guide" = "#231919"
+"ui.virtual.inlay-hint" = { fg = "#d7c1c0" }
+"ui.virtual.jump-label" = { fg = "#733334", modifiers = ["bold"] }
 
-"ui.selection" = { bg = "#42474e" }
+"ui.selection" = { bg = "#524342" }
 
-"ui.cursor" = { fg = "#101418", bg = "#cfe5ff" }
-"ui.cursor.primary" = { fg = "#101418", bg = "#cfe5ff" }
-"ui.cursor.match" = { fg = "#cfe5ff", modifiers = ["bold"] }
+"ui.cursor" = { fg = "#1a1111", bg = "#ffdad8" }
+"ui.cursor.primary" = { fg = "#1a1111", bg = "#ffdad8" }
+"ui.cursor.match" = { fg = "#ffdad8", modifiers = ["bold"] }
 
-"ui.highlight" = { bg = "#3a4857", modifiers = ["bold"] }
+"ui.highlight" = { bg = "#5d3f3e", modifiers = ["bold"] }
 
-"ui.menu" = { fg = "#e0e2e8" }
-"ui.menu.selected" = { fg = "#9ccbfb", modifiers = ["bold"] }
+"ui.menu" = { fg = "#f0dedd" }
+"ui.menu.selected" = { fg = "#ffb3b1", modifiers = ["bold"] }
 
 # --- Diagnostics ---
 
 "diagnostic.error" = { fg = "#ffb4ab", underline = { color = "#ffb4ab", style = "curl" } }
-"diagnostic.warning" = { fg = "#b9c8da", underline = { color = "#b9c8da", style = "curl" } }
-"diagnostic.info" = { fg = "#d4bee6", underline = { color = "#d4bee6", style = "curl" } }
-"diagnostic.hint" = { fg = "#504060", underline = { color = "#504060", style = "curl" } }
+"diagnostic.warning" = { fg = "#e6bdbb", underline = { color = "#e6bdbb", style = "curl" } }
+"diagnostic.info" = { fg = "#e4c18d", underline = { color = "#e4c18d", style = "curl" } }
+"diagnostic.hint" = { fg = "#5a4319", underline = { color = "#5a4319", style = "curl" } }
 "diagnostic.unnecessary" = { modifiers = ["dim"] }
 
 # --- Fallbacks (non-template usage) ---
 
 error = "#ffb4ab"
-warning = "#d4bee6"
-info = "#9ccbfb"
-hint = "#b9c8da"
+warning = "#e4c18d"
+info = "#ffb3b1"
+hint = "#e6bdbb"

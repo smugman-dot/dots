@@ -54,6 +54,7 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("systemctl --user start dmemcg-booster-user.service hyprland-focused-booster.service")
     hl.exec_cmd("gsr-ui")
     hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
+    hl.exec_cmd("gnome-keyring-daemon --start --components=secrets,ssh")
 end)
 
 -------------------------------
@@ -311,9 +312,9 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. "+ SHIFT + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("~/scripts/rofi-audio-output.sh"))
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.local/bin/shot.sh"))
-hl.layer_rule({ match = { namespace = "picker" }, no_anim = true })
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m output -m DP-1"))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("hyprcap shot region -z -c -n -w"))
+hl.layer_rule({ match = { namespace = "hyprpicker" }, no_anim = true })
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprcap shot monitor:active -w -c"))
 hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/scripts/roficlipboard.sh"))
 hl.bind(mainMod .. " + SHIFT + PERIOD", hl.dsp.exec_cmd("rofimoji --action copy"))
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("wlogout -C ~/.config/wlogout/style.css -l ~/.config/wlogout/layout -b 3 -c 0 -r 0"))
@@ -410,27 +411,29 @@ hl.window_rule({
 
     no_focus = true,
 })
+-- all FL windows: float + center (dialogs, plugin windows, etc.)
 hl.window_rule({
-    name = "fl-studio",
+    name  = "fl-all-float",
     match = { class = "^(fl64\\.exe)$" },
-    tile = true,
-    suppress_event = "fullscreen maximize",
-})
--- 1. Stop FL from forcing its own fullscreen/maximize state (the "opens fullscreen then snaps small" problem)
-hl.window_rule({
-    name = "fl-no-self-state",
-    match = { class = "^(fl64\\.exe)$" },
-    suppress_event = "fullscreen maximize",
-})
-
--- 2. Everything that isn't the main window floats and opens centered, so Hyprland has to configure it at map time (this is what the fullscreen toggle was forcing)
-hl.window_rule({
-    name = "fl-secondary",
-    match = { class = "^(fl64\\.exe)$", title = "^(?!FL Studio).*" },
     float = true,
     center = true,
+    suppress_event = "fullscreen maximize",
 })
 
+-- main window only: back to tiled (must come AFTER the rule above)
+hl.window_rule({
+    name  = "fl-main-tile",
+    match = { class = "^(fl64\\.exe)$", title = "^(FL Studio.*)$" },
+    tile  = true,
+})
+-- put this AFTER your other fl rules
+hl.window_rule({
+    name  = "fl-splash-hide",
+    match = { class = "^(fl64\\.exe)$", initial_title = "^$" },
+    workspace = "special:flsplash silent",
+    no_focus = true,
+    no_anim = true,
+})
 -- 3. Match ALL proton/umu games using xdg_tag
 hl.window_rule({ match = { xdg_tag = "proton-game" }, immediate = true })
 hl.window_rule({ match = { xdg_tag = "proton-game" }, no_blur = true })
@@ -472,7 +475,6 @@ hl.layer_rule({
     ignore_alpha = 0.5,
     animation = "popin 80%",
 })
-hl.layer_rule({ match = { namespace = "picker" }, no_anim = true })
 hl.layer_rule({
     match = { namespace = "osd" },
     blur = true,

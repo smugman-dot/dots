@@ -11,26 +11,29 @@
  */
 
 * {
-    bg0         : #101418cc;
-    bg1         : #1c2024cc;
-    bg2         : #272a2fcc;
-    fg0         : #e0e2e8;
-    fg1         : #c2c7cf;
+    bg0         : #1a1111cc;
+    bg1         : #271d1dcc;
+    bg2         : #322827cc;
+    fg0         : #f0dedd;
+    fg1         : #d7c1c0;
 
-    accent      : #9ccbfb;
-    accent-fg   : #003354;
-    accent-cont : #124a73;
+    accent      : #ffb3b1;
+    accent-fg   : #571d1f;
+    accent-cont : #733334;
 
     urgent      : #ffb4ab;
     urgent-fg   : #690005;
 
-    border-col  : #42474e;
+    border-col  : #524342;
 
     background-color: transparent;
     text-color:       @fg0;
     font: "JetBrainsMono Nerd Font 11";
 }
 
+configuration {
+    show-icons: true;
+}
 window {
     transparency: "real";
     location:     center;

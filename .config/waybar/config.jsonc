@@ -26,7 +26,7 @@
     "tray"
   ],
   "custom/gamesir": {
-    "exec": "~/.local/bin/gamesir-battery --watch --notify",
+    "exec": "~/scripts/gamesir-battery --watch --notify",
     "return-type": "json",
     "tooltip": true
   },
